@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController,AlertController, NavParams } from 'ionic-angular';
 
 import { HttpProvider } from '../../providers/http/http';
 import { AppmgrProvider } from '../../providers/appmgr/appmgr';
@@ -20,7 +20,7 @@ export class GovernmentPage {
   name:any;
   tel:any;
   userInfo:any;
-  constructor(public http:HttpProvider,private appmgr: AppmgrProvider,public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public alertCtrl:AlertController,public http:HttpProvider,private appmgr: AppmgrProvider,public navCtrl: NavController, public navParams: NavParams) {
 
     this.userInfo  = this.appmgr.getUserInfo();
     console.log(this.userInfo);
@@ -46,10 +46,30 @@ export class GovernmentPage {
         console.log(result);
         if(result=="ok") 
         {
-          window.alert("상담이 요청되었습니다");
-          this.email=null;
-          this.tel=null;
-          this.name=null;
+          let alert = this.alertCtrl.create({ 
+            title: '상담이 요청되었습니다.',
+            subTitle: '담당자가 확인 후 전화 연락드리겠습니다.',
+            buttons: [
+                {
+                  text: '취소',
+                  cssClass: 'cancel',
+                  handler: data => {
+                    // console.log("Cancel...", id);
+                  }
+                },
+                {
+                  text: '확인',
+                  cssClass: 'confirm',
+                  handler: data => {
+                    this.email=null;
+                    this.tel=null;
+                    this.name=null;
+                  }
+                }
+            ]
+          });
+          alert.present({animate:false});
+         
         }
       });
 

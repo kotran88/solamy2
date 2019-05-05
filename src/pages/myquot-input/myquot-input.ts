@@ -19,10 +19,11 @@ export class MyquotInputPage {
   analyse_id = 0;
   user_id = 0;
   email = '';
-  contInfoData :any;    // 견적관리정보
+  contInfoData =[];    // 견적관리정보
   // main data
   person = 1;
   insPrice = 0;
+  solarpower:any;
   module_name = '';
   inv_name    = '';
   quality     = '';
@@ -31,12 +32,30 @@ export class MyquotInputPage {
   as_guide   = '';
   final_price = 0;
   // select data
-  modNameData = [];
+  modNameData :any;
   invNameData = [];
   qualityData = [];
   modGuaData = [];
-  invGuaData = [];
+  modulecount=0;
+  invNamecount=0;
+  qualitycount=0;
+  modGcount=0;
+  etcCount=0;
 
+  invGcount=0;
+  invGuaData = [];
+  modulePhoto:any;
+  moduleName:any;
+  invPhoto:any;
+  invName:any;
+  qPhoto:any;
+  qName:any;
+  modPhoto:any;
+  modName:any;
+  invGPhoto:any;
+  invGName:any;
+  etcPhoto:any;
+  etcName:any;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public alertCtrl: AlertController,
     private appmgr: AppmgrProvider,
@@ -53,18 +72,80 @@ export class MyquotInputPage {
     this.http.postHttpData("/getContractInfoData", sendData1, (result) => {
       if(result) {
         console.log(result);
-        this.contInfoData = {"module_name":this.uintToString(result.module_name.data),"inv_name":this.uintToString(result.inv_name.data),
-        "quality":this.uintToString(result.quality.data),"module_guarent":this.uintToString(result.module_guarent.data),
-          "inv_guarent":this.uintToString(result.inv_guarent.data),"module_flag":result.module_flag,"inv_flag":result.inv_flag,"inv_gflag":result.inv_gflag,"module_gflag":result.module_gflag,"quality_flag":result.quality_flag
-      };
-        console.log("contInfoData");
-        console.log(this.contInfoData);
-        this.modNameData    = this.contInfoData.module_name.split(",");
-        this.invNameData    = this.contInfoData.inv_name.split(",");
-        this.qualityData    = this.contInfoData.quality.split(",");
-        this.modGuaData     = this.contInfoData.module_guarent.split(",");
-        this.invGuaData     = this.contInfoData.inv_guarent.split(",");
+        for (var i=0; i<result.length; i++){
+          console.log("i is : "+result[i]);
+          console.log(result[i])
+    this.contInfoData.push({"file_name":this.uintToString(result[i].file_name.data),
+    "file_path":this.uintToString(result[i].file_path.data),
+    "code":result[i].code,"id":result[i].id,"product_name":this.uintToString(result[i].product_name.data)
+      });
+      if(result[i].code=="1"){
+
+        this.modulecount++;
+        if(this.modulecount==1){
+          console.log(result[i]);
+          this.modulePhoto="http://solarmy.co.kr"+this.uintToString(result[i].file_path.data)+""+this.uintToString(result[i].file_name.data)
+       
+          this.module_name=this.uintToString(result[i].product_name.data);
+          console.log(this.modulePhoto);
+          //http://solarmy.co.kr/solarmy_admin/uploads/20190327/155366537011.png
+          this.modNameData={"file_name":this.uintToString(result[i].file_name.data),"file_path":this.uintToString(result[i].file_path.data),"name":this.uintToString(result[i].product_name.data)}
+        }
+        }
+      if(result[i].code==2){
+        this.invNamecount++;
+        if(this.invNamecount==1){
+          this.invPhoto="http://solarmy.co.kr"+this.uintToString(result[i].file_path.data)+""+this.uintToString(result[i].file_name.data)
+          this.inv_name=this.uintToString(result[i].product_name.data);
+        }
       }
+      if(result[i].code==3){
+        this.qualitycount++;
+        if(this.qualitycount==1){
+          this.qPhoto="http://solarmy.co.kr"+this.uintToString(result[i].file_path.data)+""+this.uintToString(result[i].file_name.data)
+          this.quality=this.uintToString(result[i].product_name.data);
+        }
+      }
+      if(result[i].code==4){
+        this.modGcount++;
+        if(this.modGcount==1){
+          this.modPhoto="http://solarmy.co.kr"+this.uintToString(result[i].file_path.data)+""+this.uintToString(result[i].file_name.data)
+          this.module_guarent=this.uintToString(result[i].product_name.data);
+        }
+      }
+      if(result[i].code==5){
+        this.invGcount++;
+        if(this.invGcount==1){
+          this.invGPhoto="http://solarmy.co.kr"+this.uintToString(result[i].file_path.data)+""+this.uintToString(result[i].file_name.data)
+          this.inv_guarent=this.uintToString(result[i].product_name.data);
+        }
+      }
+      if(result[i].code=6){
+        this.etcCount++;
+        if(this.etcCount==1){
+          this.etcPhoto="http://solarmy.co.kr"+this.uintToString(result[i].file_path.data)+""+this.uintToString(result[i].file_name.data)
+          this.etcName=this.uintToString(result[i].product_name.data);
+        }
+      }
+      console.log(this.invGPhoto);
+      console.log(this.invGName);
+
+      // if(result[i].code==6){
+      //   this.invGuaData.push(this.uintToString(result[i].product_name.data))
+      // }
+
+        }
+      
+    
+        console.log("contInfoData");
+        console.log(this.modNameData);
+        // this.modNameData    = this.contInfoData.module_name
+        // this.invNameData    = this.contInfoData.inv_name
+        // this.qualityData    = this.contInfoData.quality.split(",");
+        // this.modGuaData     = this.contInfoData.module_guarent.split(",");
+        // this.invGuaData     = this.contInfoData.inv_guarent.split(",");
+      }
+      console.log("all done");
     });
   }
   uintToString(uintArray) {
@@ -83,22 +164,23 @@ export class MyquotInputPage {
     this.email = userInfo.email;
     
     // 견적관리정보
-    let sendData1 = [];
-    this.http.postHttpData("/getContractInfoData", sendData1, (result) => {
-      if(result) {
-        console.log(result);
-        this.contInfoData = {"module_name":this.uintToString(result.module_name.data),"inv_name":this.uintToString(result.inv_name.data),
-        "quality":this.uintToString(result.quality.data),"module_guarent":this.uintToString(result.module_guarent.data),
-          "inv_guarent":this.uintToString(result.inv_guarent.data),"module_flag":result.module_flag,"inv_flag":result.inv_flag,"inv_gflag":result.inv_gflag,"module_gflag":result.module_gflag,"quality_flag":result.quality_flag
-      };
+    // let sendData1 = [];
+    // this.http.postHttpData("/getContractInfoData", sendData1, (result) => {
+    //   if(result) {
+    //     console.log(result);
+    //     this.contInfoData = {"module_name":this.uintToString(result.module_name.data),"inv_name":this.uintToString(result.inv_name.data),
+    //     "quality":this.uintToString(result.quality.data),"module_guarent":this.uintToString(result.module_guarent.data),
+    //       "inv_guarent":this.uintToString(result.inv_guarent.data),"module_flag":result.module_flag,"inv_flag":result.inv_flag,"inv_gflag":result.inv_gflag,"module_gflag":result.module_gflag,"quality_flag":result.quality_flag
+    //   };
         
-        this.modNameData    = this.contInfoData.module_name.split(",");
-        this.invNameData    = this.contInfoData.inv_name.split(",");
-        this.qualityData    = this.contInfoData.quality.split(",");
-        this.modGuaData     = this.contInfoData.module_guarent.split(",");
-        this.invGuaData     = this.contInfoData.inv_guarent.split(",");
-      }
-    });
+    //     this.modNameData    = this.contInfoData.module_name.split(",");
+    //     this.invNameData    = this.contInfoData.inv_name.split(",");
+    //     this.qualityData    = this.contInfoData.quality.split(",");
+    //     this.modGuaData     = this.contInfoData.module_guarent.split(",");
+    //     this.invGuaData     = this.contInfoData.inv_guarent.split(",");
+    //   }
+    //   console.log()
+    // });
   }
 
   back() {
@@ -111,7 +193,7 @@ export class MyquotInputPage {
         sendData["analyse_id"]  = this.analyse_id;
         sendData["comp_id"] 	  = this.user_id;
         sendData["person"] 		  = this.person;
-        sendData["price"] 	  = this.insPrice;
+        sendData["price"] 	  = 0;
         sendData["module_name"] = this.module_name;
         sendData["inv_name"] 	  = this.inv_name;
         sendData["quality"] 	  = this.quality;
@@ -120,21 +202,23 @@ export class MyquotInputPage {
         sendData["as_guide"] 	  = this.as_guide;
         sendData["final_price"] = this.final_price;
 
-    this.http.postHttpData("/setSubmitContract", sendData, (result) => {
-      if(result) {
-        this.quotFlag = true;
-      }
-    });
+        sendData["solarpower"]=this.solarpower
+        console.log(sendData);
+    // this.http.postHttpData("/setSubmitContract", sendData, (result) => {
+    //   if(result) {
+    //     this.quotFlag = true;
+    //   }
+    // });
   }
 
   validation() {
     let str = '';
-    if( this.insPrice == 0 ) {
-      str = '설치 견적비용을 입력하세요.';
-      this.confirmAlert(str);
-      return false;
-    }
-    else if( this.as_guide == '' ) {
+    // if( this.insPrice == 0 ) {
+    //   str = '설치 견적비용을 입력하세요.';
+    //   this.confirmAlert(str);
+    //   return false;
+    // }
+    if( this.as_guide == '' ) {
       str = '보증기간 및 A/S 안내를 입력하세요.';
       this.confirmAlert(str);
       return false;
@@ -181,23 +265,24 @@ export class MyquotInputPage {
   hasContInfo(type) {
     if(!this.contInfoData) return false;
     
-    if(type == 'module_name' && this.contInfoData.module_flag == 1) {
+    return true;
+    // if(type == 'module_name' && this.contInfoData.module_flag == 1) {
       
-      return true;
-    }
-    else if(type == 'inv_name' && this.contInfoData.inv_flag == 1) {
-      return true;
-    }
-    else if(type == 'quality' && this.contInfoData.quality_flag == 1) {
-      return true;
-    }
-    else if(type == 'module_guarent' && this.contInfoData.module_gflag == 1) {
-      return true;
-    }
-    else if(type == 'inv_guarent' && this.contInfoData.inv_gflag == 1) {
-      return true;
-    }
-    return false;
+    //   return true;
+    // }
+    // else if(type == 'inv_name' && this.contInfoData.inv_flag == 1) {
+    //   return true;
+    // }
+    // else if(type == 'quality' && this.contInfoData.quality_flag == 1) {
+    //   return true;
+    // }
+    // else if(type == 'module_guarent' && this.contInfoData.module_gflag == 1) {
+    //   return true;
+    // }
+    // else if(type == 'inv_guarent' && this.contInfoData.inv_gflag == 1) {
+    //   return true;
+    // }
+    // return false;
   }
 
   operator(operate) {

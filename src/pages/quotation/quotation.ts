@@ -46,6 +46,9 @@ export class QuotationPage {
   ngAfterViewInit() {
     
   }
+  back() {
+    this.navCtrl.pop({animate:false});
+  }
   ionViewDidLoad() {
     console.log('ionViewDidLoad QuotationPage');
     this.array=this.navParams.get("array");

@@ -41,7 +41,9 @@ export class MyquotViewPage {
         "inv_guarent":this.uintToString(result.inv_guarent.data),"inv_name":this.uintToString(result.inv_name.data),
         "final_price":result.final_price,
           "quality":this.uintToString(result.quality.data),"as_guide":this.uintToString(result.as_guide.data),"module_guarent":this.uintToString(result.module_guarent.data)};
-      }
+      
+          console.log(this.submitCont);
+        }
       else {
         console.log("???"+result);
         this.submitCont  = null;

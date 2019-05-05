@@ -4872,6 +4872,10 @@ textarea::-webkit-input-placeholder {
   padding-left: 2px;
 }
 
+textarea::-moz-placeholder {
+  padding-left: 2px;
+}
+
 textarea::-ms-input-placeholder {
   padding-left: 2px;
 }
@@ -26749,6 +26753,11 @@ button .button-inner {
   font-weight: 500;
 }
 
+.alert-md .alert-input::-moz-placeholder {
+  color: #999999;
+  font-weight: 500;
+}
+
 .alert-md .alert-input::-ms-input-placeholder {
   color: #999999;
   font-weight: 500;
@@ -31016,6 +31025,11 @@ page-myquot-input .textarea::-webkit-input-placeholder {
   font-size: 12px;
 }
 
+page-myquot-input .textarea::-moz-placeholder {
+  color: #a5a3a3;
+  font-size: 12px;
+}
+
 page-myquot-input .textarea::-ms-input-placeholder {
   color: #a5a3a3;
   font-size: 12px;
@@ -31786,6 +31800,11 @@ page-process-status .wrap .contract.btn-cont .textarea::-webkit-input-placeholde
   font-size: 12px;
 }
 
+page-process-status .wrap .contract.btn-cont .textarea::-moz-placeholder {
+  color: #a5a3a3;
+  font-size: 12px;
+}
+
 page-process-status .wrap .contract.btn-cont .textarea::-ms-input-placeholder {
   color: #a5a3a3;
   font-size: 12px;
@@ -31864,6 +31883,8 @@ page-quotation .list-md {
 }
 
 page-quotation .item-md {
+  padding-left: 4px;
+  padding-right: 4px;
   background-color: #eff2f3 !important;
 }
 
@@ -31871,6 +31892,23 @@ page-quotation .test {
   display: flow-root;
   height: 800px;
   overflow-y: scroll;
+}
+
+page-quotation button .button-inner {
+  letter-spacing: 0px;
+}
+
+page-quotation .item-md .item-button {
+  min-width: 62px;
+}
+
+page-quotation .item-md .item-button span {
+  font-weight: 50 !important;
+  font-size: 9px;
+}
+
+page-quotation .toolbar-content-md {
+  margin-bottom: 10px;
 }
 
 page-register .form {

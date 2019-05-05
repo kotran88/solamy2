@@ -60,7 +60,7 @@ export class MyquotStatusPage {
       console.log(result);
       if(result) {
         for(var i=0; i<result.length; i++){
-          this.quotData.push( {"reg_time":result[i].reg_time,"id":result[i].id,"month_fee":result[i].month_fee,"contract_time":result[i].contract_time,"address":this.uintToString(result[i].address.data).split(" ")[0]+this.uintToString(result[i].address.data).split(" ")[1]});
+          this.quotData.push( {"solar_power":result[i].solar_power,"reg_time":result[i].reg_time,"id":result[i].id,"month_fee":result[i].month_fee,"contract_time":result[i].contract_time,"address":this.uintToString(result[i].address.data).split(" ")[0]+this.uintToString(result[i].address.data).split(" ")[1]});
      
         }
         }
@@ -77,8 +77,10 @@ export class MyquotStatusPage {
         console.log(result);
         for(var i=0; i<result.length; i++){
           //  reg_time,submit_cont_time,address,month_fee
-          this.submitCont.push({"id":result[i].id,"reg_time":result[i].reg_time,"analyse_id":result[i].analyse_id,"address":this.uintToString(result[i].address.data),"month_fee":result[i].month_fee})
+          console.log("i is : "+i);
+          this.submitCont.push({"submit_cont_time":result[i].submit_cont_time,"solar_power":result[i].solar_power,"id":result[i].id,"reg_time":result[i].reg_time,"analyse_id":result[i].analyse_id,"address":this.uintToString(result[i].address.data).split(" ")[0]+this.uintToString(result[i].address.data).split(" ")[1],"month_fee":result[i].month_fee})
         }
+        console.log(this.submitCont);
         var tag="reg_time";
         this.submitCont.sort(function(a, b) {
           console.log(a[tag]);
@@ -88,7 +90,7 @@ export class MyquotStatusPage {
       return dateB > dateA ? 1 : -1;  
         })
       
-        console.log(this.submitCont);
+        console.log("rrrr"+this.submitCont);
       }
       
       else {

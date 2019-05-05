@@ -2,7 +2,7 @@
 <ion-header>
   <div class="top_bar">
     <span class="title">내정보 업데이트</span>
-    <img style="width:32px;" src="assets/imgs/goback.png" class="back_img" (click)="back()">
+    <img style="width:32px;" src="assets/imgs/logout.png" class="back_img" (click)="back()">
   </div>
 </ion-header>
 
@@ -30,10 +30,10 @@
       <button ion-button color="light" (click)="toggleSearchPop()">주소검색</button>
     </div>
     <div style="height: 30px;" class="alert-md">
-      <input style="width: 100%;" type="text" class="alert-input" disabled value="{{address}}"/>
+      <input style="width: 100%;" type="text"  class="alert-input" disabled value="{{address}}"/>
     </div>
     <div style="height: 30px;" class="alert-md">
-      <input style="width: 100%;" type="text" class="alert-input"  value="{{building}}"/>
+      <input style="width: 100%;" type="text"  class="alert-input"   [(ngModel)]="address_detail"/>
     </div>
     <div style="margin-top:1em; " class="alert-md">
       <label>담당자</label>

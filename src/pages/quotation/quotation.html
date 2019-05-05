@@ -6,10 +6,13 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <!-- <ion-navbar>
     <ion-title>실시간 견적 현황</ion-title>
-  </ion-navbar>
-
+  </ion-navbar> -->
+  <div class="top_bar">
+      <span class="title">실시간 견적 현황</span>
+      <img style="width:32px;" src="assets/imgs/logout.png" class="back_img" (click)="back()">
+    </div>
 </ion-header>
 
 
@@ -18,8 +21,8 @@
  class="test">
       <ion-list >
           <ion-item *ngFor="let a of array">
-              <p style="    width: 50%;
-              overflow-x: hidden; font-size:15px;">{{a.address}} </p><p style="width:15%;">{{a.name}} </p><p style="width:20%;">{{a.reg_date}} </p>
+              <p style="color:black;font-weight: bold;    width: 50%;
+              overflow-x: hidden; font-size:15px;">{{a.address}} </p><p style="width:11%;">{{a.name}} </p><p style="width:20%;">{{a.reg_date}} </p>
               <button *ngIf="a.status==0" style="background-color: rgb(41, 41, 112);
               vertical-align: middle;
               line-height: 30px;" ion-button>견적요청</button>

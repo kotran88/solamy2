@@ -30,6 +30,8 @@ export class MyinfoUpdatePage {
   bank_name = '';
   bank_num = '';
   tax_email = '';
+  post:any;
+  address_detail:any;
   tax_clerk = '';
   // 
   postCode = '';
@@ -71,6 +73,8 @@ export class MyinfoUpdatePage {
       if(result) {
         this.comp_name = this.uintToString(result.company_name.data);
         this.address = this.uintToString(result.address.data);
+        this.address_detail = this.uintToString(result.address_detail.data);
+        this.postCode = this.uintToString(result.post.data);
         this.clerk = this.uintToString(result.clerk.data);
         this.hp_num = this.uintToString(result.hp_num.data);
         this.contact = this.uintToString(result.contact.data);
@@ -144,6 +148,8 @@ export class MyinfoUpdatePage {
         sendData["email"] = this.email;
         sendData["comp_name"] = this.comp_name;
         sendData["address"] = this.address;
+        sendData["address_detail"] = this.address_detail;
+        sendData["post"] = this.postCode;
         sendData["clerk"] = this.clerk;
         sendData["hp_num"] = this.hp_num;
         sendData["contact"] = this.contact;
@@ -154,6 +160,7 @@ export class MyinfoUpdatePage {
         sendData["tax_email"] = this.tax_email;
         sendData["tax_clerk"] = this.tax_clerk;
 
+        window.alert(this.postCode);
     console.log(sendData);
     this.http.postHttpData("/updatePartnerData", sendData, (result) => {
       modal.dismiss({}, "", {animate:false});
@@ -224,7 +231,7 @@ export class MyinfoUpdatePage {
 
   selectMenu( selectedVal ) {
     this.postCode = selectedVal.zipNo;
-    this.building = selectedVal.bdNm;
+    this.address_detail = selectedVal.bdNm;
     // this.address = selectedVal.jibunAddr
     this.address = selectedVal.roadAddrPart1
     this.toggleSearchPop();

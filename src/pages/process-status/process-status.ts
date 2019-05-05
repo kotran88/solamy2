@@ -26,6 +26,7 @@ import { CONFIG } from '../../config/config';
 })
 export class ProcessStatusPage {
   tab = "tab1";
+  array=[];
   evalval:any="평가하기"
   user_id = 0;
   contractFinished:any;
@@ -52,6 +53,7 @@ export class ProcessStatusPage {
   // 계약 및 결제
   installDay = '';
   contCompDate = '';
+  newarray:any;
   contract_path = '';   // 계약서 경로
   escro_url = CONFIG.ESCRO_URL;       // 에스크로 결제 
   public target = "_system";// "_self";//_blank, _system
@@ -72,7 +74,47 @@ export class ProcessStatusPage {
     private file: File, 
     private transfer: FileTransfer
   ) {
+    this.array=navParams.get("array");
     this.analyse_id = navParams.get('analyse_id');
+    for(var i=0; i<this.array.length; i++){
+      if(this.array[i].id==this.analyse_id){
+        console.log("!!!KKK");
+        console.log(this.array[i]);
+        var contract_time="";
+              if(this.array[i].contract_time!=null){
+                contract_time=this.array[i].contract_time.split("T")[0].replace("-",".").replace("-",".")
+              }else{
+                contract_time="";
+              }
+              var ins_exp_time="";
+              if(this.array[i].ins_exp_time!=null){ 
+                contract_time=this.array[i].ins_exp_time.split("T")[0].replace("-",".").replace("-",".")
+             
+
+              }else{
+                ins_exp_time="";
+              }
+               var ins_comp_time="";
+              if(this.array[i].ins_comp_time!=null){ 
+                ins_comp_time=this.array[i].ins_comp_time.split("T")[0].replace("-",".").replace("-",".")
+             
+
+              }else{
+                ins_comp_time="";
+              }
+                 var ins_hope_time="";
+              if(this.array[i].ins_hope_time!=null){ 
+                ins_hope_time=this.array[i].ins_hope_time.split("T")[0].replace("-",".").replace("-",".")
+             
+
+              }else{
+                ins_hope_time="";
+              }
+ 
+              this.newarray={"contract_time":contract_time,"ins_exp_time":ins_exp_time,"ins_comp_time":ins_comp_time,"ins_hope_time":ins_hope_time};
+      console.log(this.newarray);
+      }
+    }
 
     let userInfo = this.appmgr.getUserInfo();
     this.user_id = userInfo.user_id;
@@ -125,6 +167,7 @@ export class ProcessStatusPage {
         console.log("company id is : "+this.contCompId);
     this.http.postHttpData("/getAnalyseById", sendData1, (result) => {
       if(result) {  // 계약된 회사가 있으면
+        console.log(result);
         this.contCompId = result.cont_comp_id;
         if( result.contract_time ) {
           this.contCompDate = this.getStrDate(result.contract_time);
@@ -137,17 +180,79 @@ export class ProcessStatusPage {
 
             let sendData1 = [];
             sendData1["analyse_id"] = this.analyse_id;
-            
+            console.log(sendData2);
         this.http.postHttpData("/getCompanyDataByCompId", sendData2, (result) => {
           if(result) {
+            console.log("kk");
             console.log(result);
             // this.comData={"inv_guarent":this.uintToString(result.inv_guarent.data),"module_guarent":this.uintToString(result.module_guarent.data),"quality":this.uintToString(result.quality.data),"inv_name":this.uintToString(result.inv_name),"module_name":this.uintToString(result.module_name),"address":this.uintToString(result.address.data),"company_name": this.uintToString(result.company_name.data),"comp_id":result.comp_id,"final_price":result.final_price,"rate":result.rate,"analyse_id":result.analyse_id};
        
             if(result.add_price_content!=null){
-              this.contData={"contract_time":result.contract_time.split("T")[0].replace("-",".").replace("-","."),"ins_exp_time":result.ins_exp_time.split("T")[0].replace("-",".").replace("-","."),"ins_comp_time":result.ins_comp_time.split("T")[0].replace("-",".").replace("-","."),"ins_hope_time":result.ins_hope_time.split("T")[0].replace("-",".").replace("-","."),"final_price":result.final_price,"add_price":result.add_price,"add_price_content":this.uintToString(result.add_price_content.data),"add_price_flag":result.add_price_flag,"comp_id":result.comp_id,"company_name": this.uintToString(result.company_name.data),"cont_price":result.cont_price};
+              var contract_time="";
+              if(result.contract_time!=null){
+                contract_time=result.contract_time.split("T")[0].replace("-",".").replace("-",".")
+              }else{
+                contract_time="";
+              }
+              var ins_exp_time="";
+              if(result.ins_exp_time!=null){ 
+                contract_time=result.ins_exp_time.split("T")[0].replace("-",".").replace("-",".")
+             
+
+              }else{
+                ins_exp_time="";
+              }
+               var ins_comp_time="";
+              if(result.ins_comp_time!=null){ 
+                ins_comp_time=result.ins_comp_time.split("T")[0].replace("-",".").replace("-",".")
+             
+
+              }else{
+                ins_comp_time="";
+              }
+                 var ins_hope_time="";
+              if(result.ins_hope_time!=null){ 
+                ins_hope_time=result.ins_hope_time.split("T")[0].replace("-",".").replace("-",".")
+             
+
+              }else{
+                ins_hope_time="";
+              }
+              
+              this.contData={"contract_time":contract_time,"ins_exp_time":ins_exp_time,"ins_comp_time":ins_comp_time,"ins_hope_time":ins_hope_time,"final_price":result.final_price,"add_price":result.add_price,"add_price_content":this.uintToString(result.add_price_content.data),"add_price_flag":result.add_price_flag,"comp_id":result.comp_id,"company_name": this.uintToString(result.company_name.data),"cont_price":result.cont_price};
       
             }else{
-              this.contData={"contract_time":result.contract_time.split("T")[0].replace("-",".").replace("-","."),"ins_exp_time":result.ins_exp_time.split("T")[0].replace("-",".").replace("-","."),"ins_comp_time":result.ins_comp_time.split("T")[0].replace("-",".").replace("-","."),"ins_hope_time":result.ins_hope_time.split("T")[0].replace("-",".").replace("-","."),"final_price":result.final_price,"add_price_flag":result.add_price_flag,"comp_id":result.comp_id,"company_name": this.uintToString(result.company_name.data),"cont_price":result.cont_price};
+              var contract_time="";
+              if(result.contract_time!=null){
+                contract_time=result.contract_time.split("T")[0].replace("-",".").replace("-",".")
+              }else{
+                contract_time="";
+              }
+              var ins_exp_time="";
+              if(result.ins_exp_time!=null){ 
+                contract_time=result.ins_exp_time.split("T")[0].replace("-",".").replace("-",".")
+             
+
+              }else{
+                ins_exp_time="";
+              }
+               var ins_comp_time="";
+              if(result.ins_comp_time!=null){ 
+                ins_comp_time=result.ins_comp_time.split("T")[0].replace("-",".").replace("-",".")
+             
+
+              }else{
+                ins_comp_time="";
+              }
+                 var ins_hope_time="";
+              if(result.ins_hope_time!=null){ 
+                ins_hope_time=result.ins_hope_time.split("T")[0].replace("-",".").replace("-",".")
+             
+
+              }else{
+                ins_hope_time="";
+              }
+              this.contData={"contract_time":contract_time,"ins_exp_time":ins_exp_time,"ins_comp_time":ins_comp_time,"ins_hope_time":ins_hope_time,"final_price":result.final_price,"add_price_flag":result.add_price_flag,"comp_id":result.comp_id,"company_name": this.uintToString(result.company_name.data),"cont_price":result.cont_price};
       
             }
             
@@ -389,6 +494,7 @@ console.log(result);
     }
     
     if(this.contract_path.indexOf('pdf') > 0) {
+      ///
       //http://solarmy.co.kr/solarmy_admin/uploads/15539567913.pdf
       let url = "http://solarmy.co.kr/solarmy_admin/uploads" +'/'+ this.contract_path;
       var options : InAppBrowserOptions = {
@@ -418,8 +524,28 @@ console.log(result);
         // modal1.present();
     }
     else {  // png / jpg
-      let img_url =  CONFIG.IMG_URL + this.contract_path;
-      this.viewImg(img_url);
+      let url = "http://solarmy.co.kr/solarmy_admin/uploads" +'/'+ this.contract_path;
+      var options : InAppBrowserOptions = {
+        location : 'yes',//Or 'no' 
+        hidden : 'no', //Or  'yes'
+        clearcache : 'yes',
+        clearsessioncache : 'yes',
+        zoom : 'yes',//Android only ,shows browser zoom controls 
+        hardwareback : 'yes',
+        mediaPlaybackRequiresUserAction : 'no',
+        shouldPauseOnSuspend : 'no', //Android only 
+        closebuttoncaption : 'Close', //iOS only
+        disallowoverscroll : 'no', //iOS only 
+        toolbar : 'yes', //iOS only 
+        enableViewportScale : 'no', //iOS only 
+        allowInlineMediaPlayback : 'no',//iOS only 
+        presentationstyle : 'pagesheet',//iOS only 
+        fullscreen : 'yes',//Windows only    
+    };
+      // this.download();
+      // const browser = this.inapp.create(this.url,"_system","location=yes,enableViewportScale=yes,hidden=no" );
+      let browser = this.inapp.create(url, '_system', options)
+
     }
   }
 
@@ -572,6 +698,7 @@ console.log(result);
         sendData["installDay"] = this.installDay;   // 설치날자
         // sendData["contCompDate"] = this.contCompDate;   // 계약날자
     this.http.postHttpData("/updateContData", sendData, (result) => {
+      window.alert("계약완료");
       if(result) {
         this.contractFlag = true;   // 계약된것으로 절환
       }

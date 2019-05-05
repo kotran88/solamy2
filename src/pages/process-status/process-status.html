@@ -85,21 +85,21 @@
             <div class="list" >
               <label>설치희망일</label>
               <div class="content">
-                <p (click)="calendar()">{{contData.ins_hope_time}} <img src="assets/imgs/calendar.png" width="15" /> </p>
+                <p (click)="calendar()">{{newarray.ins_hope_time}} <img src="assets/imgs/calendar.png" width="15" /> </p>
               </div>
             </div>
             <div class="list">
               <label>설치예정일</label>
-              <div class="content">{{contData.ins_comp_time}}</div>
+              <div class="content">{{newarray.ins_comp_time}}</div>
             </div>
             
             <div class="list" *ngIf="isContract()">
               <label>계약동의일</label>
-              <div class="content">{{contData.ins_comp_time}}</div>
+              <div class="content">{{newarray.ins_comp_time}}</div>
             </div>
             <div class="list" *ngIf="isContract()">
               <label>설치완료일</label>
-              <div class="content">{{contData.contract_time}}</div>
+              <div class="content">{{newarray.contract_time}}</div>
             </div>
 
   

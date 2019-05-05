@@ -13,11 +13,27 @@ page-quotation {
         background-color:#eff2f3 !important;
     }
     .item-md{
+        padding-left:4px;
+        padding-right:4px;
         background-color:#eff2f3 !important;
     }
     .test{
         display: flow-root;
         height: 800px;
         overflow-y: scroll;
+    }
+    button .button-inner{
+       
+        letter-spacing: 0px;
+    }
+    .item-md .item-button{
+        min-width: 62px;
+        span{
+            font-weight: 50 !important;
+            font-size: 9px;
+        }
+    }
+    .toolbar-content-md{
+        margin-bottom:10px;
     }
 }

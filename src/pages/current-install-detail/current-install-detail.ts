@@ -20,11 +20,16 @@ export class CurrentInstallDetailPage {
   name:any;
   url:any;
   array:any;
+  
+  inverterphoto=[];
+  thirdarray=[];
+  fourtharray=[];
+  fiftharray=[];
+  sixtharray=[];
   currentarray=[];
   array_detail=[];
   realdetail=[];
   invertername:any;
-  inverterphoto:any;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.array=this.navParams.get("array")
     this.array_detail=this.navParams.get("array_detail");
@@ -46,15 +51,36 @@ export class CurrentInstallDetailPage {
 
       }
     }
-    console.log("real one is : ");
+    console.log("real one issssss : ");
     console.log(this.realdetail);
     for(var i=0; i<this.realdetail.length; i++){
-      if(this.realdetail[i].code==2){
-        this.invertername=this.realdetail[i].content;
-        this.inverterphoto="http://solarmy.co.kr/"+this.realdetail[i].filepath+this.realdetail[i].filename;
+      if(this.realdetail[i].code=="2"){
+       
+        this.inverterphoto.push({"content":this.realdetail[i].content,"photo":"http://solarmy.co.kr/"+this.realdetail[i].filepath+this.realdetail[i].filename});
       }
-      if(this.realdetail[i].code==1){
-        this.currentarray.push("http://solarmy.co.kr/"+this.realdetail[i].filepath+this.realdetail[i].filename);
+      if(this.realdetail[i].code=="1"){
+        this.currentarray.push({"content":this.realdetail[i].content,"photo":"http://solarmy.co.kr/"+this.realdetail[i].filepath+this.realdetail[i].filename});
+      }
+      if(this.realdetail[i].code=="3"){
+       
+        this.thirdarray.push({"content":this.realdetail[i].content,"photo":"http://solarmy.co.kr/"+this.realdetail[i].filepath+this.realdetail[i].filename});
+      
+      }
+      
+      if(this.realdetail[i].code=="4"){
+        this.fourtharray.push({"content":this.realdetail[i].content,"photo":"http://solarmy.co.kr/"+this.realdetail[i].filepath+this.realdetail[i].filename});
+      
+      }
+      console.log("????")
+      console.log(this.inverterphoto);
+      console.log(this.thirdarray);
+      console.log(this.fourtharray);
+      if(this.realdetail[i].code==5){
+        this.fiftharray.push({"content":this.realdetail[i].content,"photo":"http://solarmy.co.kr/"+this.realdetail[i].filepath+this.realdetail[i].filename});
+      
+      }
+      if(this.realdetail[i].code==6){
+        this.sixtharray.push({"content":this.realdetail[i].content,"photo":"http://solarmy.co.kr/"+this.realdetail[i].filepath+this.realdetail[i].filename});
       
       }
      

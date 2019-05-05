@@ -18,6 +18,7 @@ import { CommonProvider } from '../../providers/common/common';
 })
 export class MyClientPage {
   user_id = 0;
+  result=[];
   clientFlag = false;
   clientData :any;
   hasContractData = 0;
@@ -45,12 +46,14 @@ export class MyClientPage {
     modal.present({animate:false});
     let sendData = [];
         sendData["user_id"] = this.user_id;
+        console.log(this.user_id);
     this.http.postHttpData("/getAnalyseByUserId", sendData, (result) => {
       modal.dismiss({}, "", {animate:false});
 
       console.log("getAnalyseByUserId");
       console.log(result);
 
+      this.result=result;
       var tag="reg_time";
       result.sort(function(a, b) {
         console.log(a[tag]);
@@ -89,7 +92,7 @@ export class MyClientPage {
   }
   
   processStatus( id ) {
-    this.navCtrl.push(ProcessStatusPage, { analyse_id: id },{animate:false} );
+    this.navCtrl.push(ProcessStatusPage, { analyse_id: id,array:this.result },{animate:false} );
   }
 
   analyseClient() {
@@ -107,7 +110,7 @@ export class MyClientPage {
   hasContDate( id ) {
     for(var i=0; i< this.clientData.length; i++) {
       if(id == i) {
-        if( !this.clientData[i].contract_time ) {
+        if( !this.clientData[i].contract_time||this.clientData[i].contract_time=="0000-00-00 00:00:00" ) {
           return false;
         }else {
           return true;
@@ -117,7 +120,12 @@ export class MyClientPage {
   }
 
   returnData(date) {
+    // console.log(date);
     if( !date ) {
+      return '';
+    }
+    if(date=="0000-00-00 00:00:00"){
+      console.log("????")
       return '';
     }
     let date1 = this.common.getStrDate(date)

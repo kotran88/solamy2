@@ -11,10 +11,16 @@
     <div class="top-wrap">
       <img src="assets/imgs/processing_banner.png" class="bg">
       <h3 class="name">{{ comData.company_name.substring(0, 2) }}***</h3>
-      <p><img src="assets/imgs/area_mark.png" width="15" /> {{ comData.area }} </p>
-      <h4><img src="assets/imgs/star2.png" width="15" /> {{ convRate(comData.rate) }} </h4>
-      <p><img src="assets/imgs/area_mark.png" width="15" /> {{ comData.complete_cnt }} 건 완료 </p>
-    </div>
+      <div style="display:inline-flex; margin-top:25px;" class="topsub">
+          <p style="
+          float: left;"><img src="assets/imgs/redmap.png" width="15" /> {{ comData.area }} </p>
+          <p style="
+          float: left;"><img src="assets/imgs/star2.png" width="15" /> {{ convRate(comData.rate) }} </p>
+          <p style="
+          float: left;"><img src="assets/imgs/area_mark.png" width="15" /> {{ comData.complete_cnt }} 건 완료 </p>
+        
+      </div>
+      </div>
     
     <div class="wrap">
       <div class="list" style="height: 53px;">
@@ -24,7 +30,7 @@
           <p>세금계산서 또는 현금영수증 발급 가능합니다.</p>
         </div>
       </div>
-      <div class="list">
+      <!-- <div class="list">
         <label>예상 설치용량</label>
         <div class="content">{{ numFormat(comData.solar_power) }}kw</div>
       </div>
@@ -51,6 +57,20 @@
       <div class="list" *ngIf="hasContInfo('inv_guarent')">
         <label>인버터보증</label>
         <div class="content">{{ contInfoData.inv_guarent }}</div>
+      </div> -->
+      <div style="    text-align: center;" class="bottomlist">
+        <img src="{{modulePhoto}}"/>
+        {{moduleName}} 
+        <img src="{{invPhoto}}"/>
+        {{invName}} 
+        <img src="{{qPhoto}}"/>
+        {{qName}} 
+        <img src="{{modPhoto}}"/>
+        {{modName}} 
+        <img src="{{invGPhoto}}"/>
+        {{invGName}} 
+        <img src="{{etcPhoto}}"/>
+        {{etcName}}
       </div>
       <div class="list">
         <label>설치 후 A/S조건</label>
