@@ -205,7 +205,6 @@ page-process-status {
         font-weight: 500;
         width: 100px;
         padding-bottom: 5px;
-        border-bottom: 1px solid #ccc;
     }
     .wrap .list .content p img {
         margin-left: 10px;
@@ -225,6 +224,20 @@ page-process-status {
         position: relative;
         top: -14px;
         background: transparent;
+    }
+    .wrap .contract.btn-cont button.viewContract2 {
+        border-radius: 5px;
+        background: none;
+        padding: 9px;
+        color: white;
+        /* width: 90%; */
+        /* color: #e15a00; */
+        /* border: solid 1px #e15a00; */
+        font-size: 12px;
+        font-weight: bold;
+        position: relative;
+        top: -14px;
+        background: black;
     }
     .wrap .contract.btn-cont {
         padding: 15px 0 0;
@@ -306,7 +319,6 @@ page-process-status {
     }
     .bottom .right-wrap {
         width: 70%;
-        float: left;
     }
     .bottom .right-wrap p {
         font-size: 11px;

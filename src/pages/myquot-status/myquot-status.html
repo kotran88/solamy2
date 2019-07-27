@@ -33,7 +33,7 @@
             </div>
 
             <div class="btn-cont">
-              <div class="quotation" (click)="quotation(item.id)">
+              <div class="quotation" (click)="quotation(item.id,item.solar_power)">
                 <img src="assets/imgs/calcu.png">견적내기
               </div>
             </div>
@@ -63,7 +63,7 @@
             </div>
 
             <div class="btn-cont">
-              <div class="quotation" (click)="quotationView(item.id)">
+              <div class="quotation" (click)="quotationView(item.id,item.analyse_id)">
                 <img src="assets/imgs/quotation_view.png">견적보기
               </div>
             </div>
@@ -77,8 +77,8 @@
     <ion-list class="contract" *ngSwitchCase="'tab3'">
 
       <ion-grid class="p0 ion-grid" *ngFor="let item of agreeCont ; let idx = index">
-        <img style="width: 70px; margin-left: 5%;" *ngIf="item.contract_path!=''" src="assets/imgs/계약완료.png"/>
-        <img style="width: 70px; margin-left: 5%;" *ngIf="item.contract_path==''" src="assets/imgs/계약 대기.png"/>
+        <img style="width: 70px; margin-left: 5%;" *ngIf="item.ins_exp_time!=null&&item.ins_exp_time!='0000-00-00 00:00:00'" src="assets/imgs/계약완료.png"/>
+        <img style="width: 70px; margin-left: 5%;" *ngIf="item.ins_exp_time==null||item.ins_exp_time=='0000-00-00 00:00:00'" src="assets/imgs/계약 대기.png"/>
         <ion-row>
           <ion-col col-12>
             <div class="wrap">
@@ -89,10 +89,10 @@
             </div>
 
             <div class="btn-cont">
-              <div  *ngIf="item.contract_path!=''"class="processStatus" (click)="processStatus(item.id, item.analyse_id)">
+              <div  *ngIf="item.ins_exp_time!=null&&item.ins_exp_time!='0000-00-00 00:00:00'"class="processStatus" (click)="processStatus(item.id, item.analyse_id)">
                 <img src="assets/imgs/calcu.png">진행현황
               </div>
-              <div style="background : #e18f00"  *ngIf="item.contract_path==''"class="processStatus" (click)="processStatus(item.id, item.analyse_id)">
+              <div style="background : #e18f00"  *ngIf="item.ins_exp_time==null||item.ins_exp_time=='0000-00-00 00:00:00'"class="processStatus" (click)="processStatus(item.id, item.analyse_id)">
                   <img src="assets/imgs/calcu.png">계약하기
                 </div>
             </div>
@@ -100,7 +100,6 @@
         </ion-row>
       </ion-grid>
 
-      <h3 class="tip" *ngIf="!hasAgreeCont()">계약된 견적이 없습니다.</h3>
 
       <ion-grid class="p0 ion-grid" *ngFor="let item of complCont ; let idx = index">
           <img style="width: 70px; margin-left: 5%;"  src="assets/imgs/설치완료.png"/>

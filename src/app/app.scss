@@ -27,7 +27,40 @@ ion-app.md [padding] .scroll-content {
     font-size: 17px;
     font-weight: bold;
 }
+// footer
+.footer { 
+    height: 120px;
+    text-align: left;
+    display: -webkit-box;
+    bottom: 0%;
+    position: relative;
+    background-color: #eff2f3;
 
+}
+.footer-cont { 
+    height: 100px; 
+    padding: 10px;
+    padding-top: 20px;
+}
+.footer h3 {
+    color: black;
+    font-size: 13.5px;
+    font-weight: bold;
+    margin-bottom: 2px;
+    margin-top: 0;
+}
+
+.footer p {
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin: auto 0 0.5rem;
+    color: #555;
+}
+.footer img { 
+    height: 55%;
+    margin-top: 5px;
+}
 .mt0 { margin-top: 0!important; }
 .mt1 { margin-top: 0.25rem!important; }
 .mt2 { margin-top: 0.75rem!important; }

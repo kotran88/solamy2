@@ -21,17 +21,12 @@
  class="test">
       <ion-list >
           <ion-item *ngFor="let a of array">
-              <p style="color:black;font-weight: bold;    width: 50%;
-              overflow-x: hidden; font-size:15px;">{{a.address}} </p><p style="width:11%;">{{a.name}} </p><p style="width:20%;">{{a.reg_date}} </p>
-              <button *ngIf="a.status==0" style="background-color: rgb(41, 41, 112);
+              <p style="color:black;font-weight: bold;    width: 45%;
+              overflow-x: hidden; font-size:15px;">{{a.address}} </p><p style="width:11%;">{{a.name}} </p><p style="width:25%;">{{a.reg_date}} </p>
+              <button  style="background-color: rgb(41, 41, 112);
               vertical-align: middle;
               line-height: 30px;" ion-button>견적요청</button>
-              <button *ngIf="a.status==1" style="background-color: #FFA200;
-              vertical-align: middle;
-              line-height: 30px;" ion-button>입금확인중</button>
-              <button *ngIf="a.status==2" style="background-color: #ff4000;
-              vertical-align: middle;
-              line-height: 30px;" ion-button>입금완료</button>
+             
           </ion-item>
          
         </ion-list>
@@ -43,4 +38,17 @@
 
       
         </div>
+        <ion-footer>
+          <div class="footer-cont">
+            <h3>© 솔라미(Solarmy)</h3>
+            <p>통신판매업신고: 제20129-경기포천-19129호</p>
+            <FORM name='CERTMARK_FORM' METHOD='POST'>
+              <input type="hidden" name="certMarkURLKey">
+          </FORM> 
+          <a href="javascript:onPopCertMar('eb0b73c3740ee4489320997ed6a60473')"><img src='https://escrow.nonghyup.com/images/IC/es/img_nh_mark02.gif' alt='에스크로이체로 결제하기' border='0'/></a> 
+          
+          
+          </div>
+        </ion-footer>
+        
 </ion-content>

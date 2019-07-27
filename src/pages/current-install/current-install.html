@@ -17,11 +17,28 @@
 
 
 <ion-content padding>
-    <div class="container" *ngFor="let a of installArray" style="    width: 90% !important;">
+    <!-- <div class="container" *ngFor="let a of installArray" style="    width: 90% !important;">
         <img (click)="gotodetail(a);" src="{{a.url}}" alt="Car" style="width:100%">
         <div class="bottom">
         <p style="font-size:17px; text-align: center">{{a.subject}}</p>
         </div>
-      </div>
-
+      </div> -->
+      <ion-list  style="
+      background:#eff2f3;
+        padding: 10px;"
+        
+        >
+        <ion-item style=" 
+        min-height: 70px;  background:#eff2f3;" *ngFor="let a of installArray">
+        <div (click)="gotodetail(a)">
+            <p style="    font-size: 16px;
+         
+            font-weight: bold;">
+              {{a.subject}}
+            </p>
+        </div> 
+          
+        </ion-item>
+       
+      </ion-list>
 </ion-content>

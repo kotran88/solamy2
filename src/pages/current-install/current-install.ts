@@ -16,14 +16,22 @@ import { CurrentInstallDetailPage } from '../current-install-detail/current-inst
 export class CurrentInstallPage {
   installArray=[];
   array_detail=[];
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     console.log('ionViewDidLoad CurrentInstallPage');
-    console.log(this.navParams.get("array"))
     this.installArray=this.navParams.get("array");
+    console.log(this.installArray);
+
+    var tag="i_date";
+    this.installArray.sort(function(a, b) {
+      console.log(a[tag]);
+      // convert date object into number to resolve issue in typescript
+      var dateA = new Date(a[tag]).getTime();
+  var dateB = new Date(b[tag]).getTime();
+  return dateB > dateA ? 1 : -1;  
+    })
 
     this.array_detail=this.navParams.get("array_detail");
-    console.log(this.installArray);
-    console.log(this.array_detail);
   }
   back() {
     this.navCtrl.pop({animate:false});

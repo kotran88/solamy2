@@ -11,6 +11,7 @@ import { TextEncoder, TextDecoder } from 'text-encoding';
 import { AppmgrProvider } from '../../providers/appmgr/appmgr';
 import { HttpProvider } from '../../providers/http/http';
 import { CommonProvider } from '../../providers/common/common';
+import { HomePage } from '../home/home';
 
 @Component({
   selector: 'page-my-client',
@@ -84,7 +85,7 @@ export class MyClientPage {
   }
 
   back() {
-    this.navCtrl.pop({animate:false});
+    this.navCtrl.setRoot(HomePage,{animate:false});
   }
 
   analyseResult( id ) {

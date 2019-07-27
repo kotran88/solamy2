@@ -1,7 +1,10 @@
 page-analyse-client {
     
     .scroll-content {
-        overflow-y: hidden;
+        overflow-y: scroll;
+    }
+    .alert-md {
+        margin-bottom: 15px;
     }
     .alert-md .alert-input.address {
         width: calc(100% - 80px) !important;
@@ -34,7 +37,7 @@ page-analyse-client {
     // btns
     .btn-cont {
         width: 100%;
-        margin-top: 40px;
+        margin-top: 30px;
         text-align: center;
     }
     .btn-cont .analyseClient {

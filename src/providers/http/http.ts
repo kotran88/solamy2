@@ -10,6 +10,7 @@ export class HttpProvider {
     }
     
     postHttpData(subUrl, sendData, callback) {
+        console.log("postHttpDataaaaaaaa"+subUrl);
         var url = CONFIG.http_server + subUrl;
         var postData = new FormData();
         var array_key = Object.keys(sendData);
@@ -20,11 +21,15 @@ export class HttpProvider {
         var data : Observable<any> = this.http.post(url, postData);
         data.subscribe(
             (res) => {
+                
                 if(res.errcode == 'ok') {
                     callback(res.errmsg);
                 }
                 else if(res.errcode == 'fail') {
                     callback(null);
+                }else{
+                    console.log("res");
+                    console.log(res);
                 }
             }, 
             (err) => {

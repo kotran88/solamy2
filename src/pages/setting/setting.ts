@@ -10,6 +10,7 @@ import { HomePage } from '../home/home';
 import { AppmgrProvider } from '../../providers/appmgr/appmgr';
 import { HttpProvider } from '../../providers/http/http';
 import { CommonProvider } from '../../providers/common/common';
+import { LoginPage } from '../login/login';
 @Component({
   selector: 'page-setting',
   templateUrl: 'setting.html',
@@ -18,16 +19,19 @@ export class SettingPage {
   user_id = 0;
   login_type = '';
   login_flag = false;
+  isLogin:boolean=false;
   push_flag = true;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public alertCtrl: AlertController,
     // common
+    
     private appmgr: AppmgrProvider,
     public common: CommonProvider,
     public http: HttpProvider,
     private naver: NaverLogin,
     public kakaoCordovaSDK: KakaoCordovaSDK
   ) {
+    this.isLogin=this.navParams.get("flag");
   }
 
   ionViewWillEnter() {
@@ -55,7 +59,9 @@ export class SettingPage {
   personal() {
     this.navCtrl.push(TermPage, { type:"personal" },{animate:false} );
   }
-
+  login(){
+    this.navCtrl.push(LoginPage);
+  }
   logout() {
     let userData = {
       user_id : 0,

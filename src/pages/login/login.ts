@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, NavController, NavParams } from 'ionic-angular';
+import { AlertController, NavController, NavParams, Platform } from 'ionic-angular';
 import { NaverLogin } from 'naver-login';
 import { KakaoCordovaSDK, AuthTypes } from 'kakao-sdk';
 
@@ -12,6 +12,7 @@ import { HomePage } from '../home/home';
 import { RegisterTypePage } from '../register-type/register-type';
 import { FindPassPage } from '../find-pass/find-pass';
 
+import { TextEncoder, TextDecoder } from 'text-encoding';
 
 @Component({
   selector: 'page-login',
@@ -29,7 +30,8 @@ export class LoginPage {
     public common: CommonProvider,
     public http: HttpProvider,
     private naver: NaverLogin,
-    public kakaoCordovaSDK: KakaoCordovaSDK
+    public kakaoCordovaSDK: KakaoCordovaSDK,
+    public platform:Platform,
   ) {
     // if( navParams.get('mem_type') ) {
     //   this.mem_type = navParams.get('mem_type');  // partners
@@ -37,8 +39,19 @@ export class LoginPage {
     //   this.mem_type = 0;  // normal member
     // }
     
-  }
 
+
+  }
+  uintToString(uintArray) {
+    var decoder = new TextDecoder("utf-8");
+  
+      var encodedString = String.fromCharCode.apply(null, uintArray);
+        var  decodedString = decoder.decode(new Uint8Array(uintArray));
+  //         let decoder = new TextDecoder('utf-8');
+  // return decoder.decode(uintArray);
+      //  var   decodedString = encodeURIComponent(encodedString);
+      return decodedString;
+  }
   ionViewWillEnter() {
     let saveInfo = this.appmgr.getSaveInfo();
     this.email = saveInfo.email;
@@ -126,6 +139,10 @@ export class LoginPage {
             month_fee   : result.month_fee
           }
           this.appmgr.setUserInfoAll(userData);
+          console.log(result);
+          localStorage.setItem("id",result.id);
+          localStorage.setItem("partnerflag",result.type);
+          localStorage.setItem("email",this.uintToString(result.email.data));
           this.navCtrl.setRoot(HomePage, { },{animate:false} );
         }
       }
@@ -175,7 +192,6 @@ export class LoginPage {
           },
           (err) => {     
             console.log(err);     
-            window.alert( JSON.stringify(err, Object.getOwnPropertyNames(err)));              
               console.log("kakaotalkLogin Err: "+err.errorCode); // 실패
           }
       );  

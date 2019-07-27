@@ -10,7 +10,9 @@
   <div *ngIf="hasAnResult()">
     <div class="top-wrap">
       <img style="width: 100%;
-      height: 140px;"
+      height: 240px;
+      margin: auto;
+      display: -webkit-box;"
       src="{{roof_path}}" >
     </div>
     <h3 class="address">
@@ -30,7 +32,7 @@
                   우리집 월평균 전기요금 <span style="color:#247ccd; float: right;">{{ numFormat('month_fee') }}</span>
                 </div>
                 <div class="content yellow">
-                  전기료 예상 절감액 <span style="color:#247ccd; float: right;">- {{ numFormat('sale_fee') }}</span>
+                  전기료 예상 절감액 <span style="color:#247ccd; float: right;text-align: right;">- {{ numFormat('sale_fee') }}</span>
                 </div>
                 <div class="content light-blue">
                   설치후 전기요금 <span style="color:#247ccd; float: right;">{{ numFormat('elect_fee') }}</span>

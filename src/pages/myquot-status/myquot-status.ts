@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {  ModalController, NavController, NavParams } from 'ionic-angular';
+import {  ModalController,AlertController, NavController, NavParams } from 'ionic-angular';
 
 import { MyquotInputPage } from '../myquot-input/myquot-input';
 import { MyquotViewPage } from '../myquot-view/myquot-view';
@@ -11,6 +11,7 @@ import { TextEncoder, TextDecoder } from 'text-encoding';
 import { AppmgrProvider } from '../../providers/appmgr/appmgr';
 import { HttpProvider } from '../../providers/http/http';
 import { CommonProvider } from '../../providers/common/common';
+import { HomePage } from '../home/home';
 
 @Component({
   selector: 'page-myquot-status',
@@ -30,14 +31,17 @@ export class MyquotStatusPage {
   agreeCont =[];
   // 설치완료
   complCont =[];
-
-  constructor(public navCtrl: NavController, public navParams: NavParams,
+  regStatus:any;
+  constructor(public alertCtrl:AlertController,public navCtrl: NavController, public navParams: NavParams,
     private appmgr: AppmgrProvider,
     public common: CommonProvider,
     public http: HttpProvider,
     public modalCtrl: ModalController
 
+
   ) {
+    this.regStatus=this.navParams.get("regStatus");
+   
     if( navParams.get('tab') ) {
       this.tab = navParams.get('tab');
     }else {
@@ -60,9 +64,39 @@ export class MyquotStatusPage {
       console.log(result);
       if(result) {
         for(var i=0; i<result.length; i++){
-          this.quotData.push( {"solar_power":result[i].solar_power,"reg_time":result[i].reg_time,"id":result[i].id,"month_fee":result[i].month_fee,"contract_time":result[i].contract_time,"address":this.uintToString(result[i].address.data).split(" ")[0]+this.uintToString(result[i].address.data).split(" ")[1]});
+          // if(this.quotData[i].reg_time
+          var date = new Date();
+          console.log(date);
+          var timestamp = date.getTime();
+          var pastTime=new Date(result[i].reg_time);
+          console.log(pastTime);
+          // var newdate=date-pastTime;
+          var timeDiff = Math.abs(date.getTime() - pastTime.getTime());
+
+         // days difference
+         var diff = Math.abs(date.getTime() - pastTime.getTime()) / 3600000;
+         var diffDays = Math.ceil(timeDiff / (1000 * 3600 ));
+
+         console.log(diff);
+         console.log(diffDays);
+         if(diffDays<25){
+          this.quotData.push( {"solar_power":result[i].solar_power,"reg_time":result[i].reg_time,"id":result[i].analyse_id,"month_fee":result[i].month_fee,"contract_time":result[i].contract_time,"address":this.uintToString(result[i].address.data).split(" ")[0]+this.uintToString(result[i].address.data).split(" ")[1]});
      
+         }
+         
         }
+
+        console.log(this.quotData);
+       
+        var tag="reg_time";
+        this.quotData.sort(function(a, b) {
+          console.log(a[tag]);
+          // convert date object into number to resolve issue in typescript
+          var dateA = new Date(a[tag]).getTime();
+      var dateB = new Date(b[tag]).getTime();
+      return dateB > dateA ? 1 : -1;  
+        })
+      
         }
       else {
         this.quotData  = null;
@@ -75,9 +109,14 @@ export class MyquotStatusPage {
     this.http.postHttpData("/getSubmitContract", sendData1, (result) => {
       if(result) {
         console.log(result);
+
+
+
+
         for(var i=0; i<result.length; i++){
           //  reg_time,submit_cont_time,address,month_fee
-          console.log("i is : "+i);
+          console.log("iiiiiiiiiii is : "+i);
+          console.log(result);
           this.submitCont.push({"submit_cont_time":result[i].submit_cont_time,"solar_power":result[i].solar_power,"id":result[i].id,"reg_time":result[i].reg_time,"analyse_id":result[i].analyse_id,"address":this.uintToString(result[i].address.data).split(" ")[0]+this.uintToString(result[i].address.data).split(" ")[1],"month_fee":result[i].month_fee})
         }
         console.log(this.submitCont);
@@ -90,22 +129,32 @@ export class MyquotStatusPage {
       return dateB > dateA ? 1 : -1;  
         })
       
-        console.log("rrrr"+this.submitCont);
+        console.log(this.submitCont);
       }
       
       else {
         this.submitCont  = null;
       }
     });
-    // 계약
+    // 계약완료, 계약대기
     this.http.postHttpData("/getAgreeContract", sendData1, (result) => {
       if(result) {
+        console.log("계약대기 완료 출력시작")
         console.log(result);
         for(var i=0; i<result.length; i++){
           //  reg_time,submit_cont_time,address,month_fee
           console.log(result[i].contract_path.data);
-          this.agreeCont.push({"status":result[i].status,"contract_path":this.uintToString(result[i].contract_path.data),"quote_status":result[i].quote_status,"id":result[i].id,"reg_time":result[i].reg_time,"analyse_id":result[i].analyse_id,"submit_cont_time":result[i].submit_cont_time,"address":this.uintToString(result[i].address.data),"month_fee":result[i].month_fee})
+          this.agreeCont.push({"ins_exp_time":result[i].ins_exp_time,"contract_time":result[i].contract_time,"status":result[i].status,"contract_path":this.uintToString(result[i].contract_path.data),"quote_status":result[i].quote_status,"id":result[i].id,"reg_time":result[i].reg_time,"analyse_id":result[i].analyse_id,"submit_cont_time":result[i].submit_cont_time,"address":this.uintToString(result[i].address.data),"month_fee":result[i].month_fee})
         }
+        var tag="reg_time";
+        this.agreeCont.sort(function(a, b) {
+          console.log(a[tag]);
+          // convert date object into number to resolve issue in typescript
+          var dateA = new Date(a[tag]).getTime();
+      var dateB = new Date(b[tag]).getTime();
+      return dateB > dateA ? 1 : -1;  
+        })
+        
         console.log(this.agreeCont);
       }
       else {
@@ -120,8 +169,16 @@ export class MyquotStatusPage {
         for(var i=0; i<result.length; i++){
           //  reg_time,submit_cont_time,address,month_fee
           console.log(result[i]);
-        this.complCont.push({"status":result[i].status,"id":result[i].id,"reg_time":result[i].reg_time,"analyse_id":result[i].analyse_id,"address":this.uintToString(result[i].address.data),"month_fee":result[i].month_fee})
+        this.complCont.push({"contract_time":result[i].contract_time,"status":result[i].status,"id":result[i].id,"reg_time":result[i].reg_time,"analyse_id":result[i].analyse_id,"address":this.uintToString(result[i].address.data),"month_fee":result[i].month_fee})
         }
+        var tag="reg_time";
+        this.complCont.sort(function(a, b) {
+          console.log(a[tag]);
+          // convert date object into number to resolve issue in typescript
+          var dateA = new Date(a[tag]).getTime();
+      var dateB = new Date(b[tag]).getTime();
+      return dateB > dateA ? 1 : -1;  
+        })
         console.log(this.complCont);
 
       }
@@ -145,16 +202,43 @@ export class MyquotStatusPage {
   }
 
   back() {
-    this.navCtrl.pop({animate:false});
+    console.log("sssssback")
+    this.navCtrl.setRoot(HomePage,{animate:false});
   }
 
   // 요청 견적
-  quotation( analyse_id ) {
-    this.navCtrl.push(MyquotInputPage, { analyse_id:analyse_id },{animate:false} );
+  quotation( analyse_id ,solar) {
+    if(this.regStatus==0){
+
+          let alert = this.alertCtrl.create({ 
+        title: '승인 후에 견적내기 가능합니다',
+        subTitle: '24시간 이내에<br />담당자가 연락드립니다',
+        buttons: [
+            {
+              text: '취소',
+              cssClass: 'cancel',
+              handler: data => {
+                // console.log("Cancel...", id);
+              }
+            },
+            {
+              text: '확인',
+              cssClass: 'confirm',
+              handler: data => {
+              }
+            }
+        ]
+      });
+      alert.present({animate:false});
+
+    }else{
+
+      this.navCtrl.push(MyquotInputPage, {comapny_id:this.user_id, analyse_id:analyse_id ,"solar":solar},{animate:false} );
+    }
   }
   // 제출한 견적
-  quotationView( id ) {
-    this.navCtrl.push(MyquotViewPage, { cont_id: id },{animate:false} );
+  quotationView( id ,analyse_id) {
+    this.navCtrl.push(MyquotViewPage, { cont_id: id , analyse_id: analyse_id },{animate:false} );
   }
   // 설치완료
   processStatus( id, analyse_id ) {

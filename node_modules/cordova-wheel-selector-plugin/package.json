@@ -1,0 +1,59 @@
+{
+  "_from": "cordova-wheel-selector-plugin",
+  "_id": "cordova-wheel-selector-plugin@1.1.3",
+  "_inBundle": false,
+  "_integrity": "sha512-UViFmI57f56LzpduzirJy4waaas7KS12I6upqmAglt4r1tNB+P2/bLfU70ngvLk5l/Ofxsuzkb+8EVBVjy5LkQ==",
+  "_location": "/cordova-wheel-selector-plugin",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "cordova-wheel-selector-plugin",
+    "name": "cordova-wheel-selector-plugin",
+    "escapedName": "cordova-wheel-selector-plugin",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-wheel-selector-plugin/-/cordova-wheel-selector-plugin-1.1.3.tgz",
+  "_shasum": "1d10d879b94f72afc0280da8b9c1cbac4d5a81dc",
+  "_spec": "cordova-wheel-selector-plugin",
+  "_where": "/Users/pedrojung/Downloads/solamytochanged0516",
+  "author": {
+    "name": "Jason Amy"
+  },
+  "bugs": {
+    "url": "https://github.com/jasonmamy/cordova-wheel-selector-plugin/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-wheel-selector-plugin",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "deprecated": false,
+  "description": "A native Android/iOS wheel selector plugin for Cordova or Ionic projects (pick numbers, strings, etc)",
+  "homepage": "https://github.com/jasonmamy/cordova-wheel-selector-plugin#readme",
+  "keywords": [
+    "picker",
+    "numberpicker",
+    "stringpicker",
+    "wheelpicker",
+    "ios",
+    "android",
+    "wheelselector"
+  ],
+  "license": "MIT",
+  "name": "cordova-wheel-selector-plugin",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jasonmamy/cordova-wheel-selector-plugin.git"
+  },
+  "version": "1.1.3"
+}

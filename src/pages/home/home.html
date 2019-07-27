@@ -8,6 +8,12 @@
           float: right;
           position: relative;
           top: 10px;
+          right: 25px;" *ngIf="isLogin()" src="assets/imgs/iconfinder_icon-ios7-bell_211694.png" (click)="gonoti()">
+          <img style="width: 25px;
+          height: 25px;
+          float: right;
+          position: relative;
+          top: 10px;
           right: 25px;" src="assets/imgs/sharing.png" (click)="setting()">
 
       </div>
@@ -20,16 +26,17 @@
     <div class="main-banner">
       <div class="main-image">
           <ion-slides #slides style="width:100% !important; height:220px"  pager >
-              <ion-slide *ngFor="let a of picturelist" (click)="opening(a)" style="width:100% !important;" >
-                  <img   src="{{a.file}}">
+              <ion-slide *ngFor="let a of picturelist; let i = index" (click)="opening(i)" style="width:100% !important;" >
+                  <img *ngIf="a.type==0"  src="{{a.file}}">
+                  
               </ion-slide>
           </ion-slides>
       </div>
       <img class="img-btn-before" src="assets/imgs/btn/before.png" (click)="prev()"/>
       <img class="img-btn-next" src="assets/imgs/btn/next.png" (click)="next()"/>
-
+<!-- 
       <p class="banner-text">당신을 위한 맞춤형 태양광</p>
-      <p class="banner-title">SOLARMY</p>
+      <p class="banner-title">SOLARMY</p> -->
     </div>
     <div class="main-login">
         <div class="auth-cont" *ngIf="!isLogin()">
@@ -95,7 +102,7 @@ margin-left: -0.5em;
           
       </div>
       <div #scroll class="down">
-        <div  *ngFor="let a of array_quotaion">
+        <div class="quot" *ngFor="let a of array_quotaion">
 
 
           <p class="quotationp"> {{a.address}}  </p> <p class="quotationp1 "style="width:15%; float:left;"> {{a.name}}</p><p class="quotationp2" style="width:20%; margin-right:15px; float:left;">{{a.reg_date}}</p>
@@ -127,7 +134,7 @@ width: 80%;
           text-align: center;
       -webkit-box-shadow: none !important;
           background: #353b5d;
-      border-radius: 30px 0px 0px 30px;
+      border-radius: 10px 0px 0px 10px;
       color: white;
           " ion-button color="light" class="login" (click)="chargeGuidePage()"><img style="width: 14px;
       height: 12px; margin-right:5px;" class="mark" src="assets/imgs/calcu.png">이용요금 안내</button>
@@ -135,7 +142,7 @@ width: 80%;
       text-align: center;
       background: #566174;
       color: white;
-      border-radius: 0px 30px 30px 0px;
+      border-radius: 0px 10px 10px 0px;
       margin-left: -0.5em;
       -webkit-box-shadow: none !important;
       " ion-button color="light" class="login" (click)=" myInfoUpdate()"><img style="width: 14px;
@@ -176,7 +183,6 @@ margin-top:1em;
         margin-left: 15px; font-size: 18px;" (click)="installcheck()">설치 현황</strong>
       <span class="more" style="
       float: right;
-
       margin-right: 30px;" (click)="installcheck();">more</span>
       <img class="arrow" src="assets/imgs/arrow.png"/>
       <hr style="    margin: 5px 0 !important;">
@@ -184,7 +190,7 @@ margin-top:1em;
       
       <div class="w3-row-padding"> 
   
-        <div *ngFor="let a of arrayInstall" class="w3-third" style="width:50%; 
+        <div *ngFor="let a of arrayinstalltodisplay" class="w3-third" style="width:50%; 
         margin-top: 1em;">
         <div  class="w3-card">
           <img class="installpic" src="{{a.url}}" alt="Car" style="width:100%">
@@ -229,8 +235,37 @@ height: 12px;     margin-right: 5px;" class="mark" src="assets/imgs/earphone.png
   
 <ion-footer>
   <div class="footer-cont">
-    <h3>© 솔라미(Solarmy)</h3>
-    <p>통신판매업신고: 제20129-경기포천-19129호</p>
+    <div class="footerupper">
+        <h3 style="float:left;">© 솔라미(Solarmy)</h3> <p style="float:right;" (click)="oopening()" >{{flagopen}}</p>
+    </div>
+
+    <div *ngIf="!footeropen"  style="display: block;" class="opened">
+    
+    </div>
+    <div *ngIf="footeropen" style="
+    display: block;    margin-top: 20px;" class="opened">
+        대표 : 이정혁<br>
+        사업자등록번호 : 121-41-43084 <br>
+        통신판매업 : 제 2019-의정부호원-0204호<br>
+        메일 : cs@solarmy.co.kr<br>
+        고객센터 : 070.7664.2221<br>
+        주소 : 서울시 강북구 도봉로76가길 55, 성신여대 운정그린캠퍼스 B동 108호<br>
+        호스팅서비스제공자 : 솔라미(Solarmy)<br>
+        전자금융분쟁처리 Tel. 070.7664.2221<br>
+    </div>
+    
+    <!-- <p>통신판매업신고: 제20129-경기포천-19129호</p> -->
+    
+    <div style="margin-top:20px;     font-size: 11px;
+  " class="footerdown">
+        솔라미(Solarmy)는 통신판매중개자이며 통신판매의 당사자가 아닙니다. <br>
+        따라서 솔라미는 상품거래정보 및 거래에 대한 책임을 지지 않습니다.
+    
+    </div>
+   
+    <!-- <img src='https://escrow.nonghyup.com/images/IC/es/img_nh_mark02.gif' alt='에스크로이체로 결제하기' border='0'/></a>  -->
+ <a href="#" (click)="escroclick();"><img src='https://escrow.nonghyup.com/images/IC/es/img_nh_mark01.gif' alt='에스크로이체로 결제하기' border='0'/></a>
+  
   </div>
 </ion-footer>
 

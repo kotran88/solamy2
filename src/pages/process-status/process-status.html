@@ -8,7 +8,7 @@
   
   <ion-segment [(ngModel)]="tab">
     <ion-segment-button value="tab1">
-      업체선청
+      업체선정
     </ion-segment-button>
     <ion-segment-button value="tab2">
       계약 및 평가
@@ -22,7 +22,7 @@
           <h3 class="title">참여업체</h3>
           
           <ion-list>
-            <ion-item [ngClass]="idx==selectedIndex ? 'selected':'noselected'"  *ngFor="let item of comData ; let idx = index">
+            <ion-item [ngClass]="item.comp_id==contCompId ? 'selected':'noselected'"  *ngFor="let item of comData ; let idx = index">
               <img class="lo" *ngIf="idx==0" src="assets/imgs/first.png"/>
               <img class="lo" *ngIf="idx==1" src="assets/imgs/second.png"/>
               <img class="lo" *ngIf="idx==2" src="assets/imgs/third.png"/>
@@ -37,7 +37,7 @@
               </ion-thumbnail>
               <h2>{{item.company_name.substring(0, 2)}}***</h2>
               <h3 style="font-size:2rem;">{{numFormat(item.final_price)}}원</h3>
-              <p><img src="assets/imgs/star2.png" width="10"> {{ convRate(item.rate) }}</p>
+              <p *ngIf="item.rate!=null"><img src="assets/imgs/star2.png" width="10"> {{ item.rate}}</p>
               <button style="    width: 7rem !important;" ion-button color="light" item-end (click)="detailCompany( item.comp_id, item.analyse_id )">상세정보</button>
             </ion-item>
             
@@ -75,38 +75,41 @@
             <h3 class="title">계약 정보</h3>
             
             <div class="list">
-              <label>업체</label>
+              <label>업체명</label>
               <div class="content">{{ contData.company_name }}</div>
             </div>
             <div class="list cont" *ngIf="!isContract()">
               <label>계약서</label>
-              <div class="content"><button ion-button class="viewContract" (click)="viewContract()">계약서 보기</button></div>
+              <div class="content"><button ion-button class="viewContract2" (click)="viewContract()">계약서 보기</button></div>
             </div>
-            <div class="list" >
+            <div *ngIf="!isContract()" class="list" >
               <label>설치희망일</label>
               <div class="content">
-                <p (click)="calendar()">{{newarray.ins_hope_time}} <img src="assets/imgs/calendar.png" width="15" /> </p>
+                <p (click)="calendar()">{{installDay}} <img src="assets/imgs/calendar.png" width="15" /> </p>
               </div>
             </div>
-            <div class="list">
+            <div *ngIf="isContract()" class="list" >
+                <label>설치희망일</label>
+                <div class="content">
+                  <p (click)="calendar()">{{returnData(newarray.ins_hope_time,'day')}}  </p>
+                </div>
+              </div>
+            <div *ngIf="newarray.ins_exp_time!=''" class="list">
               <label>설치예정일</label>
-              <div class="content">{{newarray.ins_comp_time}}</div>
+              <div class="content">{{returnData(newarray.ins_exp_time,'day')}}</div>
             </div>
             
-            <div class="list" *ngIf="isContract()">
+            <div  class="list" *ngIf="isContract()">
               <label>계약동의일</label>
-              <div class="content">{{newarray.ins_comp_time}}</div>
+              <div class="content">{{returnData(contCompDate,'day')}}</div>
             </div>
-            <div class="list" *ngIf="isContract()">
+            <div  class="list" *ngIf="isContract()&&newarray.ins_comp_time!=''">
               <label>설치완료일</label>
-              <div class="content">{{newarray.contract_time}}</div>
+              <div class="content">{{ returnData(newarray.ins_comp_time, 'day') }} </div>
             </div>
 
   
-            <div class="list">
-              <label>계약금</label>
-              <div class="content">{{ numFormat(contData.cont_price) }}원</div>
-            </div>
+          
   
             <div class="contract btn-cont" *ngIf="!isContract()">
               <div class="text-center">
@@ -127,7 +130,7 @@
           
           <div class="middle"></div>
 
-          <div *ngIf="contData.add_price_content!=undefined" class="wrap wrap_2">
+          <div *ngIf="contData.add_price!=0" class="wrap wrap_2">
               <h3 class="title">추가 금액</h3>
               
               <div class="list">
@@ -144,7 +147,6 @@
 
           <div class="wrap wrap_2">
             <h3 class="title">결제 정보</h3>
-            
             <div class="list">
               <label>총 결제금액</label>
               <div class="content" *ngIf="contData.add_price=='0'">{{ numFormat(contData.final_price ) }}원</div>
@@ -152,7 +154,7 @@
             </div>
             <div class="list">
                 <label>결제계좌정보</label>
-                <div class="content">농협 7991213113131(예금주:솔라미) </div>
+                <div class="content">농협 301-7169-8917-31 (예금주: 이정혁 솔라미) </div>
               </div>
            
             <div class="contract btn-cont" *ngIf="isPay()">
@@ -162,18 +164,20 @@
               color: white !important;" ion-button class="viewContract mt20" (click)="viewContract2()">
               <img style="    width: 14px;
               height: 14px;
-              margin-right: 5px;" src="assets/imgs/checked.png">
+              margin-right: 5px;" src="assets/imgs/check.png">
               {{confirmmessage}}</button>
 
 
             </div>
           </div>
-            <div class="bottom" *ngIf="!isPay()">
-              <div class="logo">
-                <img src="assets/imgs/nonghyop.png" (click)="ecros()"/>
-              </div>
+            <div class="bottom" style="    text-align: center;" *ngIf="!isPay()">
+                <FORM name='CERTMARK_FORM' METHOD='POST'>
+                    <input type="hidden" name="certMarkURLKey">
+                </FORM> 
+                <a href="#" (click)="escroclick();"><img src='https://escrow.nonghyup.com/images/IC/es/img_nh_mark01.gif' alt='에스크로이체로 결제하기' border='0'/></a> 
+             
               <div style="
-              margin-top: 2%;" class="right-wrap">
+              margin-top: 2%;" class="right-wrap2">
                 <p> 고객님께서 입금하신 공사대금은 <strong>구매확정</strong> 전까지</p>
                 <p> 에스크로 계좌에서 안전하게 보호됩니다.</p>
               </div>
@@ -201,8 +205,12 @@
               </ul>
               <textarea class="textarea" *ngIf="!hasComment()" placeholder="후기를 남겨주세요(500자 이내)" [(ngModel)]="comment"></textarea>
               <textarea class="textarea" *ngIf="hasComment()" disabled [(ngModel)]="comment"></textarea>
-              <button sytle="background-color:#e97e00 !important;" ion-button disabled *ngIf="hasComment()" class="mt20 width100">평가 완료</button>
-              <button sytle="background-color:#e97e00 !important;" ion-button *ngIf="!hasComment()" (click)="setComment()" class="mt20 width100">{{evalval}}</button>
+              <button sytle="background-color:#e97e00 !important;" ion-button disabled *ngIf="hasComment()" class="mt20 width100"> <img style="    width: 14px;
+                height: 14px;
+                margin-right: 5px;" src="assets/imgs/speach.png">평가 완료</button>
+              <button sytle="background-color:#e97e00 !important;" ion-button *ngIf="!hasComment()" (click)="setComment()" class="mt20 width100"><img style="    width: 14px;
+                height: 14px;
+                margin-right: 5px;" src="assets/imgs/speach.png">{{evalval}}</button>
             </div>
           </div>
         </div>

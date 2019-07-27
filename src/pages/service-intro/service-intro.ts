@@ -10,6 +10,7 @@ import { AppmgrProvider } from '../../providers/appmgr/appmgr';
 import { AnalyseClientPage } from '../analyse-client/analyse-client';
 import { RegisterTypePage } from '../register-type/register-type';
 import { LoginPage } from '../login/login';
+import { EscroPage } from '../escro/escro';
 
 @Component({
   selector: 'page-service-intro',
@@ -21,6 +22,7 @@ export class ServiceIntroPage {
   tab = "tab1";
   array=[];
   newarray=[];
+  partnerflag:boolean;
   constructor(
     public sanitizer: DomSanitizer,
     public navCtrl: NavController, public navParams: NavParams,
@@ -32,6 +34,7 @@ export class ServiceIntroPage {
   ) {
       // this.redirect = navParams.get('redirect');
       this.redirect=navParams.get("redirect");
+      this.partnerflag=navParams.get("partnerflag");
       this.array=navParams.get("array");
       console.log(this.array);
       for(var i=0; i<this.array.length; i++){
@@ -51,6 +54,9 @@ export class ServiceIntroPage {
     this.navCtrl.push(LoginPage, {},{animate:false} );
   }
 
+  escroclick(){
+    this.navCtrl.push(EscroPage);
+  }
 back(){
   this.navCtrl.pop({animate:false});
 }
@@ -78,7 +84,13 @@ back(){
   closeWindow() {
       this.navCtrl.setRoot(HomePage, {},{animate:false} );
   }
-  
+  isP(){
+    if(this.partnerflag==true){
+      return true;
+    }else{
+      return false;
+    }
+  }
   isLogin() {
     if(this.redirect == true)
         return true;
@@ -86,7 +98,12 @@ back(){
         return false;
   }
   anal() {
-    this.navCtrl.push(RegisterTypePage, {  },{animate:false} );
+    console.log(this.isLogin);
+    if(this.isLogin()==true){
+      this.navCtrl.push(AnalyseClientPage, {  },{animate:false} );
+    }else{
+      this.navCtrl.push(LoginPage, {},{animate:false} );
+    }
   }
   isReRead() {
     if(this.reRead == 1)

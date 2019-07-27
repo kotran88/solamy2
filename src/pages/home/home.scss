@@ -2,6 +2,8 @@ page-home {
     .scroll-content {
         overflow-y: scroll;
         contain: none !important;
+
+    background: #eff2f3;
     }
     
     .top-cont {
@@ -27,6 +29,7 @@ page-home {
         margin-top: 10px;
     text-align: center;
     }
+
     .arrow{
         height: 14px;
         object-fit: contain;
@@ -60,6 +63,9 @@ page-home {
     background: white;
     z-index:999999999999999; 
     width: 100%;
+    }
+    .footer-cont{
+        width:100%;
     }
     .main-upper{
         text-align: center;
@@ -98,7 +104,7 @@ page-home {
         border-radius: 0px 5px 5px 0px;
         padding: 6px;
         top: 100px;
-        z-index: 5;
+        z-index: 999999999999999999;
     }
     .img-btn-next{
 
@@ -111,7 +117,7 @@ page-home {
         border-radius: 5px 0 0 5px;
         padding: 6px;
         top: 100px;
-        z-index:5;
+        z-index:999999999999999999;
 
     }
     .main-login{
@@ -322,20 +328,19 @@ page-home {
         margin-bottom: 2px;
         margin-top: 0;
     }
+    .quot {
+        border-bottom: 0.5px solid;
+    border-color: #e4e4e4;
+    height: 15px;
+    display: table;
+    width: 95%;
+    }
     .quotationp{
         height: 15px;
         white-space: nowrap; 
-        border-top:solid 1px;
-        border-color: #CCC;
    overflow: hidden;
    text-overflow: ellipsis; 
        overflow-x: hidden; width:50%; text-align: left; margin-left:15px; float:left;
-    }
-    .quotationp1{
-     
-        border-top:solid 1px;
-        border-color: #CCC;
-  
     }
     .mainlast{
     clear:both;
@@ -343,12 +348,6 @@ page-home {
     height: 130px;
     //display: -webkit-inline-box;
 
-    }
-    .quotationp2{
-       
-        border-top:solid 1px;
-        border-color: #CCC;
-  
     }
     .downcontents{
         box-shadow: 0px 10px 5px;
@@ -362,7 +361,7 @@ page-home {
     }
     .footer img { 
         height: 55%;
-        margin-top: 5px;
+        margin-top: 25px;
     }
     .w3-third{
         width:45% !important;

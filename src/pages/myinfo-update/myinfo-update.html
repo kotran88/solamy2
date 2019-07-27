@@ -30,10 +30,12 @@
       <button ion-button color="light" (click)="toggleSearchPop()">주소검색</button>
     </div>
     <div style="height: 30px;" class="alert-md">
-      <input style="width: 100%;" type="text"  class="alert-input" disabled value="{{address}}"/>
+      <input style="width: 100%; 
+      padding: 10px 0 9px;" type="text"  class="alert-input" disabled value="{{address}}"/>
     </div>
     <div style="height: 30px;" class="alert-md">
-      <input style="width: 100%;" type="text"  class="alert-input"   [(ngModel)]="address_detail"/>
+      <input style="
+      padding: 10px 0 9px; width: 100%; margin-top:10px; " type="text" placeholder="상세주소를 입력하세요"  class="alert-input"   [(ngModel)]="address_detail"/>
     </div>
     <div style="margin-top:1em; " class="alert-md">
       <label>담당자</label>
@@ -48,7 +50,7 @@
       <input style="width:100%;" type="text" class="alert-input" [(ngModel)]="hp_num" placeholder="‘-’제외하고 숫자만 입력"/>
     </div>
     <!--  -->
-    <div class="alert-md mt20 double">
+    <!-- <div class="alert-md mt20 double">
       <label>전기면허 </label>
       <span style="top: 5px;" class="file-name">{{elect_name}}</span>
       <img style="
@@ -68,7 +70,7 @@
       position: absolute;" ion-button color="light" (click)="clickGallery('buss')">업로드</button>
       <div class="hrline"></div>
       
-    </div>
+    </div> -->
     <!--  -->
     <div class="alert-md mt10">
       <label>은행계좌</label>
@@ -85,6 +87,15 @@
       <label class="v-alignB">세금계산서 담당자</label>
       <input style="width:100%;" type="text" class="alert-input" [(ngModel)]="tax_clerk"/>
     </div>
+    <div class="alert-md">
+        <label class="v-alignB">담당지역</label>
+        <form action="#" method="post" class="demoForm" id="demoForm">
+            <input type="checkbox"  name="sports" value="서울">서울 <input type="checkbox" name="sports" value="경기">경기 <input type="checkbox"  name="sports" value="강원">강원
+            <input type="checkbox"  name="sports" value="충북">충북  <input id="ss" type="checkbox" name="sports" value="충남">충남 <input type="checkbox"  name="sports" value="전북">전북 <input type="checkbox" name="sports" value="전남">전남
+            <input type="checkbox" name="sports" value="경북">경북 <input  type="checkbox" name="sports" value="경남">경남 <input type="checkbox" name="sports" value="제주">제주
+        
+          </form>
+         </div>
     
     <div class="btn-cont">
       <button ion-button color="light" (click)="save()" class="boxBtn save"><img style="width:14px; height:14px; margin-right:5px;" src="assets/imgs/check.png">정보 저장</button>

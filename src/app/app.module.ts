@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { IonicApp, IonicErrorHandler, IonicModule, Popover } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
@@ -8,12 +8,12 @@ import { CallNumber } from '@ionic-native/call-number';
 
 import { PhotoViewer } from '@ionic-native/photo-viewer';
 import { Camera } from '@ionic-native/camera';
-import { OneSignal } from '@ionic-native/onesignal';
+import { OneSignal } from '@ionic-native/';
 import { NaverLogin } from 'naver-login';
 import { KakaoCordovaSDK } from 'kakao-sdk';
 
 
-
+import { WheelSelector } from '@ionic-native/wheel-selector';
 import { Diagnostic } from '@ionic-native/diagnostic/ngx';
 
 import { FileOpener } from '@ionic-native/file-opener/ngx';
@@ -66,6 +66,10 @@ import { CurrentInstallPage } from '../pages/current-install/current-install';
 import { CurrentInstallDetailPage } from '../pages/current-install-detail/current-install-detail';
 import { GovernmentPage } from '../pages/government/government';
 import { BenefitgeneratorPage } from '../pages/benefitgenerator/benefitgenerator';
+import { NotiPage } from '../pages/noti/noti';
+import { EscroPage } from '../pages/escro/escro';
+import { NoticedetailPage } from '../pages/noticedetail/noticedetail';
+import { PopoverComponent } from '../components/popover/popover';
 
 @NgModule({
   declarations: [
@@ -76,6 +80,8 @@ import { BenefitgeneratorPage } from '../pages/benefitgenerator/benefitgenerator
     QuotationPage,
     ServiceIntroPage,
     CurrentInstallDetailPage,
+    PopoverComponent,
+    EscroPage,
     LoginPage,
     RegisterPage,
     RegisterAuthPage,
@@ -90,6 +96,9 @@ import { BenefitgeneratorPage } from '../pages/benefitgenerator/benefitgenerator
     SupportInfoPage,
     SupportSamplePage,
     CompareQuotationPage,
+
+    NoticedetailPage,
+    NotiPage,
     CurrentInstallPage,
     AnalyseClientPage,
     AnalyseResultPage,
@@ -116,7 +125,10 @@ import { BenefitgeneratorPage } from '../pages/benefitgenerator/benefitgenerator
   entryComponents: [
     MyApp,
     FirstPage,
-
+    PopoverComponent,
+    NoticedetailPage,
+    EscroPage,
+    NotiPage,
     GovernmentPage,
     BenefitgeneratorPage,
     CurrentInstallDetailPage,
@@ -159,6 +171,7 @@ import { BenefitgeneratorPage } from '../pages/benefitgenerator/benefitgenerator
     HttpProvider,
     Diagnostic,
     FileOpener,
+    WheelSelector,
     CallNumber,
     AppmgrProvider,
     CommonProvider,

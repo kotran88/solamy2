@@ -7,13 +7,14 @@
 </ion-header>
 
 <ion-content padding>
+
   <div class="wrap" *ngIf="!isQuot()">
     <div class="list">
         <ion-item class="mt10" >
             <ion-label style="font-size: 15px;
             color: black;" stacked>태양광 설치 용량</ion-label>
-            <ion-input placeholder="선택하세요"  [(ngModel)]="solarpower">
-            </ion-input>
+            <ion-label style="font-size: 15px;
+            color: black;" stacked>{{solar}} KW </ion-label>
           </ion-item>
       <label stacked>설치인원</label>
       
@@ -21,7 +22,7 @@
       width: 100px;
       position: absolute;
       left: 10%;
-      top: 50%;" class="unit">명</span>
+      top: 80%;" class="unit">명</span>
       <img src="assets/imgs/minus.png" style="right: 15%;" class="operator" (click)="operator('dec')">
       <img src="assets/imgs/plus.png" style="right: 5%;" class="operator" (click)="operator('inc')">
     
@@ -32,18 +33,70 @@
 
 
     <div style="    text-align: center;" class="bottomlist">
+
+
+      <ion-list>
+                
+      <ion-item>
+          <ion-label (click)="presentPopover()">모듈 제품 선택  &nbsp;&nbsp;<ion-icon name="ios-arrow-down"></ion-icon>
+          </ion-label>
+          <ion-label >{{module_name}}</ion-label>
+        </ion-item>
+        <ion-item>
+            <ion-label (click)="presentPopoverInverter()">인버터 제품 선택 &nbsp;&nbsp;<ion-icon name="ios-arrow-down"></ion-icon>
+            </ion-label>
+            <ion-label >{{inv_name}}</ion-label>
+          </ion-item>
+          <ion-item>
+              <ion-label (click)="presentPopoverCalidad()">설치할 구조물 선택 &nbsp;&nbsp; <ion-icon name="ios-arrow-down"></ion-icon>
+              </ion-label>
+              <ion-label >{{quality}}</ion-label>
+            </ion-item>
+            <!-- <ion-item>
+                <ion-label (click)="presentPopoverModuleg()">모듈보증 &nbsp;&nbsp; <ion-icon name="ios-arrow-down"></ion-icon>
+                </ion-label>
+                <ion-label >{{module_guarent}}</ion-label>
+              </ion-item>
+                 <ion-item>
+              <ion-label (click)="presentPopoverInverterg()">인버터 보증 &nbsp;&nbsp; <ion-icon name="ios-arrow-down"></ion-icon>
+              </ion-label>
+              <ion-label >{{inv_guarent}}</ion-label>
+            </ion-item> -->
+        <!-- <ion-item *ngIf="inv_name!=''" style="text-align: center;" > 
+          <ion-label ><p style="font-size:1.5em; margin-bottom:5px;">{{inv_name}}</p><img src="{{invPhoto}}"/></ion-label>
+        </ion-item>  
+  <ion-item *ngIf="quality!=''" style="text-align: center;" > 
+          <ion-label ><p style="font-size:1.5em; margin-bottom:5px;">{{quality}}</p><img src="{{qPhoto}}"/></ion-label>
+        </ion-item> 
+     
+
+        <ion-item *ngIf="module_guarent!=''" style="text-align: center;" > 
+          <ion-label ><p style="font-size:1.5em; margin-bottom:5px;">{{module_guarent}}</p><img src="{{modPhoto}}"/></ion-label>
+        </ion-item> 
+  
+        <ion-item *ngIf="inv_guarent!=''" style="text-align: center;" > 
+          <ion-label ><p style="font-size:1.5em; margin-bottom:5px;">{{inv_guarent}}</p><img src="{{invGPhoto}}"/></ion-label>
+        </ion-item>
+       
+        <ion-item *ngIf="etcName!=''" style="text-align: center;" > 
+          <ion-label ><p style="font-size:1.5em; margin-bottom:5px;">{{etcName}}</p><img src="{{etcPhoto}}"/></ion-label>
+        </ion-item>  -->
+      </ion-list>
+      <p>{{etcName}}</p>
+        <img src={{etcPhoto}}/>
+      <!-- {{module_name}} 
       <img src="{{modulePhoto}}"/>
-      {{module_name}} 
-      <img src="{{invPhoto}}"/>
       {{inv_name}} 
-      <img src="{{qPhoto}}"/>
+      <img src="{{invPhoto}}"/>
       {{quality}} 
-      <img src="{{modPhoto}}"/>
+      <img src="{{qPhoto}}"/>
       {{module_guarent}} 
-      <img src="{{invGPhoto}}"/>
+      <img src="{{modPhoto}}"/>
       {{inv_guarent}} 
-      <img src="{{etcPhoto}}"/>
+      <img src="{{invGPhoto}}"/>
       {{etcName}}
+      <img src="{{etcPhoto}}"/> -->
+     
     </div>
 
 
@@ -54,10 +107,8 @@
     
     <div class="list">
       <label class="mb0" stacked>최종 소비자가 입력 (부가세 포함 가격)</label>
-      <input  style="  color:black;  border-bottom: solid lightgray 1px;" type="text" class="width95" value="390,000" [(ngModel)]="final_price" />
-    
+      <ion-input (ionFocus)="checkFocus()" (blur)="change($event);" id="value1"   style="  color:black;  border-bottom: solid lightgray 1px;" type="text" class="width95"  [(ngModel)]="final_price" ></ion-input>
 
-    
     </div>
 
     <div class="btn-cont">

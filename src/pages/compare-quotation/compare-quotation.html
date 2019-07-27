@@ -64,12 +64,12 @@
     </ion-row>
   </ion-grid>
 
-  <div class="btn-wrap" *ngIf="!isLogin()">
-    <div class="btn-cont mt20">
+  <div class="btn-wrap" >
+    <div *ngIf="!partnerflag" class="btn-cont mt20">
       <button ion-button color="light" (click)="login()" class="boxBtn analyseClient"><img src="assets/imgs/bar-chart.png">분석 의뢰하기</button>
     </div>
     
-    <div class="login-cont">
+    <div *ngIf="!login_flag" class="login-cont">
       <button ion-button color="light" class="login" (click)="login()"><img style="width: 20px;
         height: 20px; margin-right: 5px" class="mark" src="assets/imgs/lock-open.png">&nbsp;로그인</button>
       <button ion-button color="light" class="register" (click)="registerPage()"><img style="width: 20px;
@@ -77,10 +77,10 @@
     </div>
   </div>
 
-  <div class="btn-wrap" *ngIf="isLogin()">
+  <!-- <div class="btn-wrap" *ngIf="isLogin()">
     <div class="btn-cont mt40">
       <button ion-button color="light" (click)="analyseClient()" class="boxBtn analyseClient"><img src="assets/imgs/analyze_client_w.png">분석 의뢰하기</button>
     </div>
-  </div>
+  </div> -->
 
 </ion-content>

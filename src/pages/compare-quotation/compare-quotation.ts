@@ -17,11 +17,13 @@ import { CommonProvider } from '../../providers/common/common';
 export class CompareQuotationPage {
 
   user_id = 0;
+  partnerflag:boolean;
   login_flag = false;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private appmgr: AppmgrProvider,
     public common: CommonProvider,
     public http: HttpProvider) {
+     this.partnerflag= this.navParams.get("partnerflag");
       let userInfo = this.appmgr.getUserInfo();
     this.user_id = userInfo.user_id;
     
@@ -48,7 +50,12 @@ export class CompareQuotationPage {
   }
   
   login() {
-    this.navCtrl.push(LoginPage, {},{animate:false} );
+    if(this.login_flag){
+      this.navCtrl.push(AnalyseClientPage, {  },{animate:false} );
+    }else{
+      this.navCtrl.push(LoginPage, {},{animate:false} );
+    }
+   
   }
   
   isLogin() {

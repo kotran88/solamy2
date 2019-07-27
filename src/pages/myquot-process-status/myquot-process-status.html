@@ -15,17 +15,10 @@
         <label>고객명</label>
         <div class="content">{{submitCont.name}}</div>
       </div>
-      <div class="list cont">
-        <label>계약금</label>
-        <div class="content">{{ numFormat(submitCont.cont_price) }}원</div>
-      </div>
-      <div class="list cont">
-        <label>결제금액</label>
-        <div class="content">{{ numFormat(submitCont.price - submitCont.cont_price) }}원</div>
-      </div>
+    
       <div class="list cont">
         <label>총금액</label>
-        <div class="content">{{ numFormat(submitCont.price) }}원</div>
+        <div class="content">{{ numFormat(submitCont.final_price) }}원</div>
       </div>
       <div class="list cont">
         <label>고객 설치 희망일</label>
@@ -40,17 +33,17 @@
       </div>
       <div class="list" *ngIf="isContract()">
         <label>설치예정일</label>
-        <div class="content">{{ins_exp_time}}</div>
+        <div class="content">{{ returnData(submitCont.ins_exp_time, 'day') }}</div>
       </div>
       <div class="list cont" *ngIf="!isContract()">
         <label>설치완료일</label>
-        <div class="content" (click)="calendarComp()">
-          <p>{{ins_comp_time}} <img src="assets/imgs/calendar.png" width="15" /> </p>
+        <div class="content" >
+          <!-- <p>{{ ins_comp_time }}  <img src="assets/imgs/calendar.png" width="15" /> </p> -->
         </div>
       </div>
       <div class="list" *ngIf="isContract()">
         <label>설치완료일</label>
-        <div class="content">{{ins_comp_time}}</div>
+        <div *ngIf="submitCont.ins_comp_time!='0000-00-00 00:00:00'" class="content">{{ returnData(submitCont.ins_comp_time, 'day') }} </div>
       </div>
 
       <div class="list double" *ngIf="!isContract()">
@@ -74,12 +67,33 @@
     </div>
     
     <div class="middle" *ngIf="isContract()"></div>
+
+    <div *ngIf="submitCont.add_price!=0" class="wrap wrap_2">
+        <h3 class="title">추가 금액</h3>
+        
+        <div class="list">
+          <label>추가금액 안내</label>
+          <div class="content">{{submitCont.add_price_content}}</div>
+        </div>
+        <div class="list">
+            <label>추가금액</label>
+            <div class="content">{{submitCont.add_price}} </div>
+          </div>
+       
+     
+      </div>
+
     <div class="wrap wrap_2" *ngIf="isContract()">
       <h3 class="title">결제 정보</h3>
       
-      <div class="list">
+      <div style="height:60px;" class="list">
         <label>결제금액</label>
-        <div class="content">{{ numFormat(submitCont.price - submitCont.cont_price) }}원</div>
+        <div *ngIf="submitCont.add_price!=0" class="content">
+            {{ numFormat(submitCont.final_price+submitCont.add_price ) }}원 (추가금액 : {{submitCont.add_price}} 원 )
+        </div>
+        <div *ngIf="submitCont.add_price==0" class="content">
+            {{ numFormat(submitCont.final_price ) }}원
+        </div>
       </div>
       <div class="contract btn-cont" *ngIf="!hasPay()">
         <h6>결제전입니다.</h6>

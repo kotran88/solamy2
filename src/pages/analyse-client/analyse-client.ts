@@ -32,42 +32,32 @@ export class AnalyseClientPage {
   searchFlag = false; // search diaolog
   searchValFlag = false // search result 
   input_address = '';
-
+ 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
     private appmgr: AppmgrProvider,
     public common: CommonProvider,
     public http: HttpProvider) {
-
-      this.userInfo  = this.appmgr.getUserInfo();
-    console.log(this.userInfo);
-    this.email=String.fromCharCode.apply(null,this.userInfo.email.data)
-    this.user_id = this.userInfo.user_id;
-    this.mem_type = this.userInfo.mem_type;
-    // this.email = this.userInfo.email;
-    this.name = this.uintToString(this.userInfo.name.data);
-    this.address = this.uintToString(this.userInfo.address.data) 
-    console.log(this.address);
-    // this.postCode = userInfo.zipcode,
-    // this.building = userInfo.building,
-    this.contact = this.uintToString(this.userInfo.contact.data)  
-    this.month_fee = this.userInfo.month_fee;
-    this.month_fee=this.numberWithCommas(this.month_fee)+"원";
-    this.postCode=this.userInfo.zipcode;
-    if(this.userInfo.login_flag == 1) {
-      this.login_flag = true;
-    }else {
-      this.login_flag = false;
-    }
-    
-    this.postCode = '';
-    this.building = '';
+      
     
   }
   
    numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+checkFocus(){
+  console.log("onfocus")
+  if(this.month_fee.length>0){
+    this.month_fee="";
+  }
+}
+change(event) {
+  console.log(event);
+  console.log(this.month_fee);
+  var final_price=this.month_fee;
+  this.month_fee=this.month_fee+"원";
+    // (<HTMLInputElement>document.getElementById("value1")).value = event+"won";
 }
   uintToString(uintArray) {
     var decoder = new TextDecoder("utf-8");
@@ -80,7 +70,32 @@ export class AnalyseClientPage {
       return decodedString;
   }
   ionViewWillEnter() {
+    var userInfo = this.appmgr.getUserInfo();
+    this.user_id = userInfo.user_id;
+    this.userInfo=userInfo;
+    console.log(userInfo);
+    console.log(this.userInfo);
+    console.log("email issss")
+    this.email=localStorage.getItem("email");
+    this.user_id = this.userInfo.user_id;
+    this.mem_type = this.userInfo.mem_type;
+    // this.name = this.uintToString(this.userInfo.name.data);
+    // this.address = this.uintToString(this.userInfo.address.data) 
+    console.log(this.address);
+    // this.postCode = userInfo.zipcode,
+    // this.building = userInfo.building,
+    // this.contact = this.uintToString(this.userInfo.contact.data)  
+    // this.month_fee = this.userInfo.month_fee;
+    // this.month_fee=this.numberWithCommas(this.month_fee)+"원";
+    // this.postCode=this.userInfo.zipcode;
+    if(this.userInfo.login_flag == 1) {
+      this.login_flag = true;
+    }else {
+      this.login_flag = false;
+    }
     
+    this.postCode = '';
+    this.building = '';
   }
 
   back() {
@@ -92,21 +107,30 @@ export class AnalyseClientPage {
 
     let modal = this.modalCtrl.create(LoadingPage, {txt: "제출중입니다..."});
     modal.present({animate:false});
+    var newvalue=(<HTMLInputElement>document.getElementById("detailaddress")).value;
     let sendData = [];
         sendData["user_id"] = this.user_id;
         sendData["email"] = this.email;
         sendData["name"] = this.name;
         sendData["address"] = this.address;
+        sendData["address_detail"] = newvalue;
+        sendData["post"] = this.postCode;
         sendData["contact"] = this.contact;
         sendData["month_fee"] = this.month_fee;
-    this.http.postHttpData("/analyseNormalClient", sendData, (result) => 
+        console.log(sendData);
+        
+        this.http.postHttpData("/getCountsAnal", sendData, (result) => 
     {
-      modal.dismiss({}, "", {animate:false});
+    
       if(result) 
       {
-        let alert = this.alertCtrl.create({ 
-          title: '의뢰해주셔서 감사합니다.',
-          subTitle: '24시간 내에 (영업시간 기준) 분석 <br />요청하신 자료를 받아 보실 수 있습니다.',
+
+        console.log(result.cnt);
+        if(result.cnt>2){
+          modal.dismiss({}, "", {animate:false});
+              let alert = this.alertCtrl.create({ 
+          title: '분석의뢰 제한 안내',
+          subTitle: '2개월 이내에는 <br />세번의 요청만 가능합니다. ',
           buttons: [
               {
                 text: '취소',
@@ -119,14 +143,47 @@ export class AnalyseClientPage {
                 text: '확인',
                 cssClass: 'confirm',
                 handler: data => {
-                  this.clientSuccess ();
+                  this.navCtrl.pop();
                 }
               }
           ]
         });
         alert.present({animate:false});
+        }else{
+
+                this.http.postHttpData("/analyseNormalClient", sendData, (result) => 
+          {
+            modal.dismiss({}, "", {animate:false});
+            if(result) 
+            {
+              let alert = this.alertCtrl.create({ 
+                title: '의뢰해주셔서 감사합니다.',
+                subTitle: '24시간 내에 (영업시간 기준) 분석 <br />요청하신 자료를 받아 보실 수 있습니다.',
+                buttons: [
+                    {
+                      text: '취소',
+                      cssClass: 'cancel',
+                      handler: data => {
+                        // console.log("Cancel...", id);
+                      }
+                    },
+                    {
+                      text: '확인',
+                      cssClass: 'confirm',
+                      handler: data => {
+                        this.clientSuccess ();
+                      }
+                    }
+                ]
+              });
+              alert.present({animate:false});
+            }
+          });
+
+        }
       }
     });
+   
   }
 
   clientSuccess () {
@@ -212,6 +269,9 @@ export class AnalyseClientPage {
     this.building = selectedVal.bdNm;
     // this.address = selectedVal.jibunAddr
     this.address = selectedVal.roadAddrPart1
+    console.log(this.postCode);
+    console.log(this.building);
+    console.log(this.address);
     this.toggleSearchPop();
   }
 

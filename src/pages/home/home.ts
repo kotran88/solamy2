@@ -1,5 +1,6 @@
 import { Component,ViewChild } from '@angular/core';
 import { NavController, Platform,AlertController, NavParams, Events,Slides } from 'ionic-angular';
+import {DomSanitizer} from '@angular/platform-browser';
 
 import { OneSignal } from '@ionic-native/onesignal';
 // common 
@@ -24,8 +25,10 @@ import { ChargeGuidePage } from '../charge-guide/charge-guide';
 import { QuotationPage } from '../quotation/quotation';
 import { CurrentInstallPage } from '../current-install/current-install';
 
-import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { InAppBrowser ,InAppBrowserOptions} from '@ionic-native/in-app-browser';
 import { AnalyseResultPage } from '../analyse-result/analyse-result';
+import { NotiPage } from '../noti/noti';
+import { EscroPage } from '../escro/escro';
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -34,17 +37,25 @@ export class HomePage {
   @ViewChild('slides') slides : Slides;
   @ViewChild('scroll') scroll: any;
   user_id = 0;
+  flagopen:string="열기";
+  regStatus:any;
   mem_type = 1;
   userInfo:any;
+  arrayinstalltodisplay=[];
+  partnerflag:any;
   array_quotaion=[];
   picturelist=[];
   login_flag = true;
+  notilist:any;
   videolist=[];
   arrayInstall=[];
   arrayInstallDetail=[];
+  email:any;
+  footeropen:boolean=false;
   // 
   constructor(public iab:InAppBrowser,public navCtrl: NavController, public navParams: NavParams,
     private appmgr: AppmgrProvider,
+    public sanitizer: DomSanitizer,
     public common: CommonProvider,
     public alertCtrl: AlertController,
     public http: HttpProvider,
@@ -52,6 +63,7 @@ export class HomePage {
     private platform : Platform,  
     public event : Events
   ) {
+    this.flagopen="열기"
     this.login_flag = navParams.get('login_status');
     this.event.unsubscribe("get_sqlite_data");
     this.event.subscribe("get_sqlite_data", (userInfo) => {
@@ -103,11 +115,27 @@ export class HomePage {
 }
 opening(v){
   console.log(v);
-  console.log(v.file);
-  console.log(v.url);
-  if(v.url!=""){
-    const browser = this.iab.create(v.url);
+  if(v==0){
+      this.navCtrl.push(ServiceIntroPage, { redirect: this.login_flag,partnerflag:this.isPartners(),"array":this.videolist },{animate:false} );
   }
+}
+onv(value){
+  console.log(value);
+  const options: InAppBrowserOptions = {
+    zoom: 'no',
+    
+  }
+
+  // this.iab.create("https://escrow.nonghyup.com/?certMarkURLKey="+value,'_system',options)
+  window.open("https://escrow.nonghyup.com/?certMarkURLKey="+value,'_system','height=700, width=650, status=yes, toolbar=no, menubar=no, location=no');
+  // (<HTMLInputElement>document.getElementById("forming")).submit();
+  // document.CERTMARK_FORM.certMarkURLKey.value = key;
+  // document.CERTMARK_FORM.action='https://escrow.nonghyup.com/?certMarkURLKey=' + key; 
+  // document.CERTMARK_FORM.target='self';
+  // document.CERTMARK_FORM.submit();
+}
+escroclick(){
+  this.navCtrl.push(EscroPage)
 }
   ionViewDidLoad() {
     
@@ -116,25 +144,52 @@ opening(v){
     this.mem_type = userInfo.mem_type;
     console.log("user info is : ");
     console.log(userInfo);
+    this.user_id = Number(localStorage.getItem("id"));
+    this.partnerflag = Number(localStorage.getItem("partnerflag"));
+    this.email = localStorage.getItem("email")
+    console.log(this.user_id)
+   
+    
     if(userInfo.login_flag == 1) {
       this.login_flag = true;
+     
+      if(this.platform.is('android') || this.platform.is('ios')) {
+        this.OneSignalInstall(); 
+    }
     }else {
       this.login_flag = false;
     }
-    if(this.platform.is('android') || this.platform.is('ios')) {
-        this.OneSignalInstall(); 
-    }
+
     
+    let message = [];
+
+    let sendData12 = [];
+    message["note"]=0;
+    message["user_id"]=this.user_id
+    // this.http.postHttpData("/sendPush", message, (result) => {
+    //   console.log("sendmmmm")
+    //   console.log(result);
+    //   window.alert(result);
+    //   if(result) {
+    //   }
+    // })
+    this.http.postHttpData("/getNotice", sendData12, (result) => {
+      console.log("getnoti");
+      console.log(result);
+      this.notilist=result;
+      if(result) {
+      }
+    })
     let sendData2 = [];
     sendData2["user_id"] = this.user_id;
     this.http.postHttpData("/getUserInfoById", sendData2, (result) => {
-      console.log(result);
-
       this.userInfo=result;
       if(result) {
+        this.regStatus=result.reg_status;
         console.log(result);
       }
     });
+    
     let sendData1 = [];
     this.http.postHttpData("/getBanner", sendData1, (result) => {
       if(result) {
@@ -172,16 +227,16 @@ opening(v){
           if(result[i].banner_type==0){
             console.log(flag);
             if(flag==1){
-              this.picturelist.push({"file":"http://solarmy.co.kr/"+filepath+""+filename,"url":url,"flag":flag})
+              console.log("file path and name"+filename+"///"+filepath);
+              this.picturelist.push({"file":"http://solarmy.co.kr/"+filepath+""+filename,"url":url,"flag":flag,"type":0})
               console.log("http://solarmy.co.kr/"+filepath+""+filename)
             }
            
           }
-          // else{
-          //   //image
-          //   this.picturelist.push({"file":"http://solarmy.co.kr/"+filepath+""+filename,"url":url,"flag":flag})
-          //   console.log("http://solarmy.co.kr/"+filepath+""+filename)
-          // }
+          else{
+            //video
+          }
+          console.log("kkkk")
             console.log(this.picturelist);
         }
        
@@ -204,13 +259,36 @@ opening(v){
         console.log(String.fromCharCode.apply(null, result[i].address.data));
         var name=this.uintToString( result[i].name.data);
         var address=this.uintToString(result[i].address.data);
+        var newaddress=[];
+        newaddress=address.split(" ");
+        var newaddressstring="";
+        console.log(newaddress);
+        console.log(newaddress.length);
+        // for(var i=0; i<newaddress.length; i++){
+        //   if(i==newaddress.length-1){
+
+        //   }else if(i==newaddress.length-1){
+
+        //   }else{
+
+        //     // newaddressstring=newaddressstring+""+newaddress[i]
+        //   }
+         
+        // }
+        if(newaddress[0]=="서울특별시"||newaddress[0]=="인천광역시"||newaddress[0]=="부산광역시"||newaddress[0]=="대구광역시"||newaddress[0]=="광주광역시"){
+          newaddressstring=newaddress[0]+" "+newaddress[1];
+        }else{
+          newaddressstring=newaddress[0]+" "+newaddress[1]+" "+newaddress[2];
+        }
+        
+        console.log("new addressstring is : "+newaddressstring)
         var status=result[i].status;
         console.log(status);
         console.log(name);
         console.log(address);
         console.log(result[i].reg_time.split("T")[0]);
         // this.array_quotaion.push({"name":name.substring(0,1)+"*"+name.substring(2,3),"address":address,"reg_date":result[i].reg_time.split("T")[0],"status":status})
-        this.array_quotaion.push({"name":name.substring(0,1)+"*"+name.substring(2,3),"address":address,"reg_date":result[i].reg_time.split("T")[0].replace(/-/gi,"."),"status":status})
+        this.array_quotaion.push({"name":name.substring(0,1)+"*"+name.substring(2,3),"address":newaddressstring,"reg_date":result[i].reg_time.split("T")[0].replace(/-/gi,"."),"status":status})
        
       }
       console.log(this.array_quotaion);
@@ -277,6 +355,7 @@ banner_type 이 1인경우 url 을 쓰면 됩니다.
     
     this.http.postHttpData("/getInstallation", sendData1, (result) => {
       if(result) {
+        
       console.log("getInstallation result gogo");
       console.log(result);
       for(var i=0; i<result.length; i++){
@@ -303,7 +382,31 @@ banner_type 이 1인경우 url 을 쓰면 됩니다.
     
         this.arrayInstall.push({"id":id,"i_date":i_date,"url":"http://solarmy.co.kr"+filepath+""+filename,"area":this.uintToString(result[i].area.data),"amount":this.uintToString(result[i].amount.data),"subject":this.uintToString(result[i].subject.data)})
 
+        console.log("input done");
       };
+
+      console.log("before sorting array")
+console.log(this.arrayInstall);
+      var tag="i_date";
+        this.arrayInstall.sort(function(a, b) {
+          console.log(a[tag]);
+          // convert date object into number to resolve issue in typescript
+          var dateA = new Date(a[tag]).getTime();
+      var dateB = new Date(b[tag]).getTime();
+      return dateB > dateA ? 1 : -1;  
+        })
+
+
+console.log(this.arrayInstall);
+
+for(var i=0; i<this.arrayInstall.length; i++){
+  if(i<2){
+this.arrayinstalltodisplay.push(this.arrayInstall[i]);
+  }
+ 
+}
+
+     
       console.log(this.arrayInstall)
       
       }
@@ -412,16 +515,19 @@ banner_type 이 1인경우 url 을 쓰면 됩니다.
   }
   
   customer_center() {
-    this.navCtrl.push(CustomCenterPage, {},{animate:false} );
+    this.navCtrl.push(CustomCenterPage, {redirect: this.login_flag,partnerflag:this.isPartners()},{animate:false} );
   }
   
   service_intro() {
     console.log(this.videolist);
-    this.navCtrl.push(ServiceIntroPage, { redirect: this.login_flag,"array":this.videolist },{animate:false} );
+    this.navCtrl.push(ServiceIntroPage, { redirect: this.login_flag,partnerflag:this.isPartners(),"array":this.videolist },{animate:false} );
   }
   
   setting() {
-    this.navCtrl.push(SettingPage, {  },{animate:false} );
+    this.navCtrl.push(SettingPage, { "flag":this.login_flag },{animate:false} );
+  }
+  gonoti(){
+    this.navCtrl.push(NotiPage,{ "flag":this.login_flag,"notilist":this.notilist,"partnerflag":this.partnerflag },{animate:false} );
   }
   
   isLogin() {
@@ -438,7 +544,7 @@ banner_type 이 1인경우 url 을 쓰면 됩니다.
   }
   // partners
   myQuotStatus() {
-    this.navCtrl.push(MyquotStatusPage, {},{animate:false} );
+    this.navCtrl.push(MyquotStatusPage, {"regStatus":this.regStatus},{animate:false} );
   }
   
   chargeGuidePage() {
@@ -449,9 +555,20 @@ banner_type 이 1인경우 url 을 쓰면 됩니다.
     this.navCtrl.push(MyinfoUpdatePage, {  },{animate:false} );
   }
 
+  oopening(){
+    console.log("goo")
+    if(this.footeropen==true){
+      this.flagopen="열기";
+      this.footeropen=false;
+    }else{
+      this.flagopen="닫기";
+      this.footeropen=true;
+    }
+    
+  }
   OneSignalInstall()
   {
-    this.oneSignal.startInit('a7627c17-c314-4d42-b7d3-2f8369a77e09', '775054775564');
+    this.oneSignal.startInit('0016198c-1b1d-4535-9335-b908bed3554a', '199290897115');
     var iosSettings = {
       "kOSSettingsKeyAutoPrompt" : true,
       "kOSSettingsKeyInAppLaunchURL" : true
@@ -474,8 +591,11 @@ banner_type 이 1인경우 url 을 쓰면 됩니다.
           sendData['user_id'] = this.user_id;
           sendData["field"] = 'token';
           sendData["value"] = data.userId;
-         
-          this.http.postHttpData("/updateTokenId", sendData, (result) => {});
+          this.http.postHttpData("/updateTokenId", sendData, (result) => {
+
+            console.log("updatetoken id : ");
+            console.log(result);
+          });
     });
   }
 

@@ -8,6 +8,7 @@ import { GovernmentPage } from '../government/government';
 
 import { CallNumber } from '@ionic-native/call-number';
 import { BenefitgeneratorPage } from '../benefitgenerator/benefitgenerator';
+import { EscroPage } from '../escro/escro';
 
 
 
@@ -24,16 +25,21 @@ import { BenefitgeneratorPage } from '../benefitgenerator/benefitgenerator';
 })
 export class CustomCenterPage {
 
+  partnerflag:boolean;
   constructor(public _kakaoCordovaSDK: KakaoCordovaSDK,public callNumber:CallNumber,public navCtrl: NavController, public navParams: NavParams) {
 
 
+    this.partnerflag=this.navParams.get("partnerflag");
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CustomCenterPage');
   }
   compareQuo(){
-    this.navCtrl.push(CompareQuotationPage, {},{animate:false} );
+    this.navCtrl.push(CompareQuotationPage, {"partnerflag":this.partnerflag},{animate:false} );
+  }
+  escroclick(){
+    this.navCtrl.push(EscroPage);
   }
   government(){
     this.navCtrl.push(GovernmentPage, {},{animate:false} );
@@ -62,7 +68,7 @@ export class CustomCenterPage {
   phonecall(){
 
     
-this.callNumber.callNumber("15771234", true)
+this.callNumber.callNumber("07076642221", true)
 
 
 .then(res => console.log('Launched dialer!', res))

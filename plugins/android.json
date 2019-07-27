@@ -35,6 +35,10 @@
     "cordova-plugin-ionic-keyboard": {
       "PACKAGE_NAME": "com.solar.my.myapplication"
     },
+    "cordova-plugin-ionic-webview": {
+      "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+",
+      "PACKAGE_NAME": "com.solar.my.myapplication"
+    },
     "cordova-plugin-kakao-sdk": {
       "KAKAO_APP_KEY": "ddffb06532dac4e9ccd2fddbbb51eb78",
       "PACKAGE_NAME": "com.solar.my.myapplication"
@@ -56,6 +60,9 @@
       "PACKAGE_NAME": "com.solar.my.myapplication"
     },
     "onesignal-cordova-plugin": {
+      "PACKAGE_NAME": "com.solar.my.myapplication"
+    },
+    "cordova-wheel-selector-plugin": {
       "PACKAGE_NAME": "com.solar.my.myapplication"
     }
   },

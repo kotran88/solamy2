@@ -76,18 +76,38 @@ export class MyquotProcessStatusPage {
       let sendData = [];
           sendData["cont_id"] = this.cont_id;
           sendData["analyse_id"] = this.analyse_id;
+           
+          console.log("id and anal id issss : "+this.cont_id+"///"+this.analyse_id);
       this.http.postHttpData("/getQuotStatus", sendData, (result) => {
         // modal.dismiss({}, "", {animate:false});
         if(result) {
 
           console.log(result);
-          this.submitCont = {"name":this.uintToString(result.name.data),"cont_price":result.cont_price,"price":result.price,"ins_hope_time":result.ins_hope_time};
-          this.pay_flag = result.pay_flag;
+          if(result.add_price_content!=null){
+            this.submitCont = {"add_price":result.add_price,"add_price_content":this.uintToString(result.add_price_content.data),"ins_comp_time":result.ins_comp_time,"ins_exp_time":result.ins_exp_time,"final_price":result.final_price,"name":this.uintToString(result.name.data),"cont_price":result.cont_price,"price":result.price,"ins_hope_time":result.ins_hope_time};
+          }else{
+            this.submitCont = {"add_price":result.add_price,"add_price_content":"none","ins_comp_time":result.ins_comp_time,"ins_exp_time":result.ins_exp_time,"final_price":result.final_price,"name":this.uintToString(result.name.data),"cont_price":result.cont_price,"price":result.price,"ins_hope_time":result.ins_hope_time};
+          }
+           this.pay_flag = result.pay_flag;
           this.pay_time = result.pay_time;
-          this.custom_replay = this.uintToString(result.custom_replay.data);
+         
+          if(result.custom_replay!=null){
+            this.custom_replay = this.uintToString(result.custom_replay.data);
+          }
+          console.log("dfsfsdfd")
+          console.log(this.custom_replay);
+         
+  
           this.contract_time = this.returnData(result.contract_time, 'min');
-          if(result.contract_time)
+          console.log(result.ins_comp_time);
+          console.log(result.ins_exp_time);
+          if(result.ins_comp_time&&result.ins_exp_time!="0000-00-00 00:00:00"){
             this.contract = true;   // 계약되어있을 때
+          }else{
+            this.contract=false;
+          }
+          console.log(this.contract);
+            
             // 
           this.contract_path = this.uintToString(result.contract_path.data);
           // rating
@@ -158,6 +178,29 @@ export class MyquotProcessStatusPage {
         //   url: url
         // });
         // modal1.present();
+    } else {  // png / jpg
+      let url = "http://solarmy.co.kr/solarmy_admin/uploads" +'/'+ this.contract_path;
+      var options : InAppBrowserOptions = {
+        location : 'yes',//Or 'no' 
+        hidden : 'no', //Or  'yes'
+        clearcache : 'yes',
+        clearsessioncache : 'yes',
+        zoom : 'yes',//Android only ,shows browser zoom controls 
+        hardwareback : 'yes',
+        mediaPlaybackRequiresUserAction : 'no',
+        shouldPauseOnSuspend : 'no', //Android only 
+        closebuttoncaption : 'Close', //iOS only
+        disallowoverscroll : 'no', //iOS only 
+        toolbar : 'yes', //iOS only 
+        enableViewportScale : 'no', //iOS only 
+        allowInlineMediaPlayback : 'no',//iOS only 
+        presentationstyle : 'pagesheet',//iOS only 
+        fullscreen : 'yes',//Windows only    
+    };
+      // this.download();
+      // const browser = this.inapp.create(this.url,"_system","location=yes,enableViewportScale=yes,hidden=no" );
+      let browser = this.inapp.create(url, '_system', options)
+
     }
   }
 
@@ -167,11 +210,54 @@ export class MyquotProcessStatusPage {
     let sendData = [];
         sendData["cont_id"]       = this.cont_id;
         sendData["ins_exp_time"] = this.ins_exp_time;
-        sendData["ins_comp_time"] = this.ins_comp_time;
         sendData["analyse_id"]    = this.analyse_id;
     this.http.postHttpData("/updateContDates", sendData, (result) => {
       if(result) {
         this.contract = true;
+
+        let sendData = [];
+        sendData["cont_id"] = this.cont_id;
+        sendData["analyse_id"] = this.analyse_id;
+    this.http.postHttpData("/getQuotStatus", sendData, (result) => {
+      // modal.dismiss({}, "", {animate:false});
+      if(result) {
+
+        console.log(result);
+        if(result.add_price_content!=null){
+          this.submitCont = {"add_price":result.add_price,"add_price_content":this.uintToString(result.add_price_content.data),"ins_comp_time":result.ins_comp_time,"ins_exp_time":result.ins_exp_time,"final_price":result.final_price,"name":this.uintToString(result.name.data),"cont_price":result.cont_price,"price":result.price,"ins_hope_time":result.ins_hope_time};
+        }else{
+          this.submitCont = {"add_price":result.add_price,"add_price_content":"none","ins_comp_time":result.ins_comp_time,"ins_exp_time":result.ins_exp_time,"final_price":result.final_price,"name":this.uintToString(result.name.data),"cont_price":result.cont_price,"price":result.price,"ins_hope_time":result.ins_hope_time};
+        }
+        this.pay_flag = result.pay_flag;
+        this.pay_time = result.pay_time;
+       
+        if(result.custom_replay!=null){
+          this.custom_replay = this.uintToString(result.custom_replay.data);
+        }
+        console.log("dfsfsdfd")
+        console.log(this.custom_replay);
+        this.contract_time = this.returnData(result.contract_time, 'min');
+        if(result.contract_time)
+          this.contract = true;   // 계약되어있을 때
+          // 
+        this.contract_path = this.uintToString(result.contract_path.data);
+        // rating
+        let star = 'assets/imgs/star.png';
+        let stared = 'assets/imgs/star2.png';
+        for(var i=0; i<5; i++) {
+          if( result.rate > 0 && i+1 <= result.rate ) {
+            this.imgUrl[i] = stared;
+          }
+          else
+            this.imgUrl[i] = star;
+        }
+      }
+      else {
+        console.log(result);
+        this.submitCont  = null;
+      }
+    });
+    
       }
     });
   }
@@ -229,6 +315,7 @@ export class MyquotProcessStatusPage {
         return false;
   }
   isContract() {
+
     if(this.contract == true)
         return true;
     else

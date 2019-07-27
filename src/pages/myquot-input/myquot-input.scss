@@ -2,6 +2,9 @@ page-myquot-input {
     .scroll-content{
         background:#eff2f3;
     }
+    select{
+
+    }
     .wrap {
         padding: 20px 40px;
     }
@@ -14,6 +17,40 @@ page-myquot-input {
         height: 30px;
         position: absolute;
         display: inline-block;
+    }
+    .alert-md {
+        margin-bottom: 15px;
+    }
+    .alert-md .alert-input.address {
+        width: calc(100% - 80px) !important;
+    }
+    .alert-md .alert-input{
+        padding-left: 10px;
+    width: calc(100% - 15px);
+    }
+    .alert-md label{
+        margin-top:0.5em;
+        width: 100% !important;
+        color:black !important;
+    }
+    .alert-md button {
+        width: 60px;
+        letter-spacing: -1px;
+        font-size: 12px;
+        height: 30px;
+        margin: 0;
+        padding: 0;
+        border: 1px solid #dedede;
+    }
+    .text-input-md{
+        margin:0 !important;
+    }
+    .alert-md button span {
+        font-size: 12px;
+        letter-spacing: 0;
+    }
+    .alert-md.double lable {
+        vertical-align: bottom;
     }
     .item-md{
         background:#eff2f3 !important;
@@ -36,7 +73,7 @@ page-myquot-input {
         line-height: 13px;
     }
     .wrap .list input {
-        color: #eff2f3;
+        color: black;
         font-weight: 700;
         border: none;
 

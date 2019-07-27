@@ -26,6 +26,7 @@ export class RegisterPage {
     public common: CommonProvider,
     public http: HttpProvider
   ) {
+    console.log("register come");
   }
 
   ionViewWillEnter() {
@@ -80,10 +81,40 @@ export class RegisterPage {
   }
   /////////
   personal() {
-    this.navCtrl.push(TermPage, { type:"personal" },{animate:false} );
+    this.navCtrl.push(TermPage, { type:"personal","email":this.email,"pass":this.password,"repass":this.repassword },{animate:false} ).then(()=>{
+      this.navCtrl.getActive().onDidDismiss(data => {
+        console.log(data);
+        if(data.email!=""){
+
+          this.email=data.email;
+        }
+        if(data.pass!=""){
+          this.password=data.pass;  
+        }
+        if(data.repass!=""){
+        
+          this.repassword=data.repass;
+        }
+      });
+    })
   }
   term(){
-    this.navCtrl.push(TermPage, { type:"term" },{animate:false} );
+    this.navCtrl.push(TermPage, { type:"term" ,"email":this.email,"pass":this.password,"repass":this.repassword},{animate:false} ).then(()=>{
+      this.navCtrl.getActive().onDidDismiss(data => {
+        console.log(data);
+        if(data.email!=""){
+
+          this.email=data.email;
+        }
+        if(data.pass!=""){
+          this.password=data.pass;  
+        }
+        if(data.repass!=""){
+        
+          this.repassword=data.repass;
+        }
+      });
+    })
   }
   
   validate () {
